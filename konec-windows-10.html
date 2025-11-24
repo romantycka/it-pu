@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="cs" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konec Windows 10 – Přechod na Windows 11 bez stresu | Petr Urban</title>
+    <link rel="canonical" href="https://opravimpocitac.cz/konec-windows-10.html">
+    <meta name="description"
+        content="Váš počítač s Windows 10 přestane být po říjnu 2026 bezpečný. Zajistím snadný a klidný přechod na nové Windows 11.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://opravimpocitac.cz/konec-windows-10.html">
+    <meta property="og:title" content="Konec Windows 10 – Přechod na Windows 11 bez stresu | Petr Urban">
+    <meta property="og:description"
+        content="Váš počítač s Windows 10 přestane být po říjnu 2026 bezpečný. Zajistím snadný a klidný přechod na nové Windows 11.">
+    <meta property="og:image" content="https://opravimpocitac.cz/Assets/logo.svg">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#0f172a', // Slate 900
+                        secondary: '#ea580c', // Orange 600
+                        accent: '#38bdf8', // Sky 400
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hero-bg {
+            background-image: url('Assets/hero_repair_1763626740594.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/90 backdrop-blur-md shadow-sm z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <img src="Assets/logo.svg" alt="Opravím počítač" class="h-12 w-auto">
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html#sluzby"
+                        class="text-slate-600 hover:text-secondary font-medium transition">Služby</a>
+                    <a href="index.html#cenik"
+                        class="text-slate-600 hover:text-secondary font-medium transition">Ceník</a>
+                    <a href="index.html#reference"
+                        class="text-slate-600 hover:text-secondary font-medium transition">Reference</a>
+                    <a href="index.html#kontakt"
+                        class="text-slate-600 hover:text-secondary font-medium transition">Kontakt</a>
+                    <a href="#kontakt"
+                        class="bg-secondary text-white px-5 py-2.5 rounded-full font-bold hover:bg-orange-600 transition shadow-lg hover:shadow-orange-500/30">
+                        Objednat přechod
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-primary focus:outline-none">
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-2 shadow-xl">
+                <a href="index.html#sluzby"
+                    class="block px-3 py-3 text-slate-600 hover:text-secondary font-medium rounded-lg hover:bg-slate-50">Služby</a>
+                <a href="index.html#cenik"
+                    class="block px-3 py-3 text-slate-600 hover:text-secondary font-medium rounded-lg hover:bg-slate-50">Ceník</a>
+                <a href="index.html#reference"
+                    class="block px-3 py-3 text-slate-600 hover:text-secondary font-medium rounded-lg hover:bg-slate-50">Reference</a>
+                <a href="index.html#kontakt"
+                    class="block px-3 py-3 text-slate-600 hover:text-secondary font-medium rounded-lg hover:bg-slate-50">Kontakt</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-900 text-white hero-bg">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-900/80 z-10"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl">
+                <div
+                    class="inline-block bg-blue-600/20 border border-blue-500/30 rounded-full px-4 py-1.5 mb-6 backdrop-blur-sm">
+                    <span class="text-blue-300 font-semibold text-sm tracking-wide uppercase">Konec podpory Windows
+                        10</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6">
+                    Přechod na Windows 11 <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">bez stresu a
+                        starostí</span>
+                </h1>
+                <p class="text-xl text-slate-300 mb-10 leading-relaxed max-w-2xl">
+                    Váš počítač s Windows 10 přestane být po říjnu 2026 bezpečný. Pokud technice nerozumíte, jsem tu pro
+                    vás. Vše vám vysvětlím a zajistím snadný a klidný přechod.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#kontakt"
+                        class="bg-secondary text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-orange-600 transition shadow-lg hover:shadow-orange-500/30 text-center">
+                        Chci pomoci s přechodem
+                    </a>
+                    <a href="#proc-prejit"
+                        class="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition text-center">
+                        Proč je to nutné?
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="proc-prejit" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="reveal">
+                    <h2 class="text-3xl md:text-4xl font-bold text-primary mb-6">Proč potřebujete Windows 11?</h2>
+                    <div class="space-y-6 text-lg text-slate-600">
+                        <p>
+                            Windows 10 končí. Postupně přestanou fungovat vaše oblíbené aplikace jako vyhledávač Google
+                            nebo Seznam. Internetové bankovnictví může odmítnout přístup z nezabezpečeného systému.
+                        </p>
+                        <p>
+                            Nové programy už nebudou Windows 10 podporovat a váš počítač se bude chovat stále hůř a
+                            pomaleji.
+                        </p>
+                        <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-lg">
+                            <h3 class="text-red-800 font-bold text-xl mb-2">⚠️ DŮLEŽITÉ: Bezpečnost</h3>
+                            <p class="text-red-700">
+                                Po říjnu 2026 se vypnou bezpečnostní aktualizace. Váš počítač bude zranitelný vůči virům
+                                a útokům hackerů. Neriskujte ztrátu svých dat a peněz.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-100 p-8 rounded-2xl reveal">
+                    <h3 class="text-2xl font-bold text-primary mb-6">Co se stane, když neaktualizujete?</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-red-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-slate-700">Konec bezpečnostních aktualizací</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-red-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-slate-700">Riziko zavirování a ztráty dat</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-red-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-slate-700">Nefunkční bankovnictví a úřady</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-red-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-slate-700">Postupná nefunkčnost aplikací</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What I Offer Section -->
+    <section class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">Co nabízím</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto">Srozumitelně, bezpečně a bez zbytečného stresu.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div
+                    class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition border-t-4 border-secondary reveal">
+                    <div
+                        class="w-14 h-14 bg-orange-100 rounded-lg flex items-center justify-center text-secondary mb-6">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Kompletní přechod</h3>
+                    <p class="text-slate-600">
+                        Kontrola kompatibility vašeho počítače, záloha důležitých dat, instalace a nastavení Windows 11.
+                        Vše vyřeším za vás.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div
+                    class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition border-t-4 border-blue-500 reveal">
+                    <div class="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-6">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Zrychlení počítače</h3>
+                    <p class="text-slate-600">
+                        Váš počítač vyčistím a optimalizuji. Bude startovat rychleji a práce na něm bude plynulejší.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div
+                    class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition border-t-4 border-green-500 reveal">
+                    <div class="w-14 h-14 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mb-6">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Trpělivý přístup</h3>
+                    <p class="text-slate-600">
+                        Vše vám osobně a srozumitelně vysvětlím. Žádné složité termíny. Ukážu vám, co je nové a jak to
+                        používat.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Pricing Section -->
+    <section class="py-20 bg-slate-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-primary mb-8 reveal">Jednoduchý ceník</h2>
+            <div class="bg-white p-8 rounded-2xl shadow-lg inline-block w-full md:w-2/3 reveal">
+                <p class="text-slate-500 mb-2 uppercase tracking-wide font-semibold">Sazba za práci</p>
+                <div class="text-5xl font-bold text-primary mb-4">345 Kč <span
+                        class="text-xl text-slate-400 font-normal">/ 30 min</span></div>
+                <p class="text-slate-600 mb-6">Vždy vám sdělím cenu předem. Žádná skrytá překvapení.</p>
+
+                <div class="border-t border-slate-100 pt-6 text-left">
+                    <h4 class="font-bold text-primary mb-2">Kolik času to zabere?</h4>
+                    <p class="text-slate-600 text-sm">
+                        Počítejte minimálně s přibližně <strong>2 hodinami práce</strong>. Skutečný čas závisí na stavu
+                        a rychlosti vašeho počítače a na množství dat. Před zahájením vždy sdělím odhad času i celkovou
+                        cenu.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section (Reused) -->
+    <section id="kontakt" class="py-20 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Ozvěte se mi</h2>
+                <p class="text-slate-300 text-lg max-w-2xl mx-auto">
+                    Napište stručně, s čím potřebujete pomoci. Brzy se ozvu zpět.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <!-- Contact Info -->
+                <div class="reveal">
+                    <div class="space-y-8">
+                        <div class="flex items-center">
+                            <div
+                                class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-secondary mr-4 flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-400">Telefon</p>
+                                <a href="tel:+420704176526"
+                                    class="text-xl font-bold hover:text-secondary transition">+420 704 176 526</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <div
+                                class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-secondary mr-4 flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-400">Email</p>
+                                <a href="mailto:info@opravimpocitac.cz"
+                                    class="text-xl font-bold hover:text-secondary transition">info@opravimpocitac.cz</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <div
+                                class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-secondary mr-4 flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-400">Působnost</p>
+                                <p class="text-xl font-bold">Blansko/Boskovice a okolí</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="bg-white text-slate-800 p-8 rounded-xl shadow-2xl reveal">
+                    <h3 class="text-2xl font-bold text-primary mb-6">Napište mi</h3>
+                    <form action="https://formsubmit.co/info@opravimpocitac.cz" method="POST" class="space-y-4">
+                        <!-- Spam Protection -->
+                        <input type="hidden" name="_captcha" value="true">
+                        <input type="text" name="_honey" style="display:none">
+                        <input type="hidden" name="_subject" value="Poptávka: Přechod na Windows 11">
+                        <input type="hidden" name="_next" value="https://opravimpocitac.cz/dekuji.html">
+
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Jméno a
+                                příjmení</label>
+                            <input type="text" id="name" name="name" required
+                                class="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition">
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-slate-700 mb-1">Telefon</label>
+                            <input type="tel" id="phone" name="phone" required
+                                class="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                            <input type="email" id="email" name="email" required
+                                class="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-slate-700 mb-1">Jak mohu
+                                pomoci?</label>
+                            <textarea id="message" name="message" rows="4" required
+                                class="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition"
+                                placeholder="Prosím stručně a věcně..."></textarea>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-secondary text-white font-bold py-3 px-6 rounded-md hover:bg-orange-600 transition transform hover:-translate-y-0.5 shadow-md">
+                            Odeslat
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-slate-800 text-center text-slate-500 text-sm">
+            <div class="mb-6 flex justify-center">
+                <img src="Assets/logo-white.svg" alt="Opravím počítač"
+                    class="h-10 w-auto opacity-80 hover:opacity-100 transition duration-300">
+            </div>
+            <p class="mb-4">
+                Nepoužívám analytické ani marketingové cookies. Pouze technické nutné pro provoz webu. <a
+                    href="zasady.html" class="text-secondary hover:underline">Více v zásadách</a>.
+            </p>
+            <p>&copy; 2024 Petr Urban - Servis počítačů. Všechna práva vyhrazena.</p>
+        </div>
+    </section>
+
+    <script>
+        // Mobile menu toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Scroll Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    </script>
+</body>
+
+</html>

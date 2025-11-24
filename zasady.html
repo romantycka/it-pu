@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="cs" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zásady ochrany soukromí | Petr Urban</title>
+    <link rel="canonical" href="https://opravimpocitac.cz/zasady.html">
+    <meta name="description" content="Informace o zpracování osobních údajů a používání cookies.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://opravimpocitac.cz/zasady.html">
+    <meta property="og:title" content="Zásady ochrany soukromí | Petr Urban">
+    <meta property="og:description" content="Informace o zpracování osobních údajů a používání cookies.">
+    <meta property="og:image" content="https://opravimpocitac.cz/Assets/logo.svg">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#0f172a', // Slate 900
+                        secondary: '#ea580c', // Orange 600
+                        accent: '#38bdf8', // Sky 400
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Force dark text for privacy policy content */
+        #policy-content p,
+        #policy-content li,
+        #policy-content h1,
+        #policy-content h2,
+        #policy-content h3,
+        #policy-content strong,
+        #policy-content span {
+            color: #0f172a !important;
+            /* Slate 900 */
+        }
+
+        #policy-content li::marker {
+            color: #0f172a !important;
+            /* Slate 900 */
+        }
+
+        #policy-content a {
+            color: #ea580c !important;
+            /* Orange 600 */
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/90 backdrop-blur-md shadow-sm z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <img src="Assets/logo.svg" alt="Opravím počítač" class="h-12 w-auto">
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html#sluzby"
+                        class="text-slate-600 hover:text-secondary font-medium transition">Služby</a>
+                    <a href="index.html#cenik"
+                        class="text-slate-600 hover:text-secondary font-medium transition">Ceník</a>
+                    <a href="index.html#reference"
+                        class="text-slate-600 hover:text-secondary font-medium transition">Reference</a>
+                    <a href="index.html#kontakt"
+                        class="text-slate-600 hover:text-secondary font-medium transition">Kontakt</a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-primary focus:outline-none">
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-2 shadow-xl">
+                <a href="index.html#sluzby"
+                    class="block px-3 py-3 text-slate-600 hover:text-secondary font-medium rounded-lg hover:bg-slate-50">Služby</a>
+                <a href="index.html#cenik"
+                    class="block px-3 py-3 text-slate-600 hover:text-secondary font-medium rounded-lg hover:bg-slate-50">Ceník</a>
+                <a href="index.html#reference"
+                    class="block px-3 py-3 text-slate-600 hover:text-secondary font-medium rounded-lg hover:bg-slate-50">Reference</a>
+                <a href="index.html#kontakt"
+                    class="block px-3 py-3 text-slate-600 hover:text-secondary font-medium rounded-lg hover:bg-slate-50">Kontakt</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="flex-grow pt-32 pb-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-primary mb-8">Zásady ochrany soukromí</h1>
+
+            <div id="policy-content" class="prose prose-slate max-w-none text-slate-900">
+                <p class="lead text-lg">
+                    Tato stránka vysvětluje, jaké osobní údaje o vás zpracovávám, za jakým účelem, na jakém právním
+                    základě, jak dlouho, komu je mohu zpřístupnit a jaká máte v souvislosti se zpracováním práva. Text
+                    je psán srozumitelně a stručně.
+                </p>
+
+                <h2 class="text-2xl font-bold text-primary mt-8 mb-4">Správce údajů a kontakt</h2>
+                <p>Správcem osobních údajů je osoba poskytující službu „IT pomoc – přechod na Windows 11“ v okrese
+                    Blansko/Boskovice a okolí.</p>
+                <ul class="list-none pl-0 space-y-1 mt-4">
+                    <li><strong>Jméno:</strong> Petr Urban</li>
+                    <li><strong>IČ:</strong> 88650324</li>
+                    <li><strong>E‑mail:</strong> <a href="mailto:info@opravimpocitac.cz"
+                            class="text-secondary hover:underline">info@opravimpocitac.cz</a></li>
+                    <li><strong>Telefon:</strong> +420 704 176 526</li>
+                    <li><strong>Web:</strong> konecwindows10.com</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-primary mt-8 mb-4">Jaké údaje zpracovávám</h2>
+                <p>Zpravidla pouze údaje, které mi sami poskytnete při poptávce služby:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>identifikační a kontaktní údaje: jméno, telefon, e‑mail, město/obec,</li>
+                    <li>obsah zprávy (co potřebujete vyřešit),</li>
+                    <li>technické údaje z povahy komunikace (čas odeslání, IP poskytovatele apod. – dle služby
+                        e‑mail/formulář).</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-primary mt-8 mb-4">Účely a právní základy zpracování</h2>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>vyřízení poptávky a komunikace před uzavřením smlouvy (plnění smlouvy / předsmluvní jednání, čl.
+                        6 odst. 1 písm. b) GDPR),</li>
+                    <li>ochrana práv a vedení interních záznamů (oprávněný zájem, čl. 6 odst. 1 písm. f) GDPR),</li>
+                    <li>plnění zákonných povinností (např. daňové doklady – čl. 6 odst. 1 písm. c) GDPR).</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-primary mt-8 mb-4">Doba uchování</h2>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>běžná poptávková komunikace: nejdéle 6 měsíců od posledního kontaktu,</li>
+                    <li>dokladová/účetní agenda: dle zákonných lhůt (obvykle 5–10 let).</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-primary mt-8 mb-4">Příjemci a zpracovatelé</h2>
+                <p>Vaše údaje mohu sdílet pouze v nezbytné míře s poskytovateli služeb, které zajišťují doručení zprávy
+                    či provoz webu:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li><strong>E‑mailový poskytovatel</strong> – doručení a uchování e‑mailové komunikace.</li>
+                    <li><strong>FormSubmit</strong> – pokud odešlete formulář na webu, služba FormSubmit zprostředkuje
+                        doručení zprávy na e‑mail. Zpracuje údaje, které odešlete ve formuláři. Další informace viz
+                        zásady FormSubmit.</li>
+                    <li><strong>Mapová služba</strong> – vložená mapa může načítat obsah od provozovatele map (a
+                        používat jeho cookies). Načítá se pouze při zobrazení dané části stránky.</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-primary mt-8 mb-4">Cookies a podobné technologie</h2>
+                <p>
+                    Tento web používá pouze technické (nezbytné) cookies nutné pro jeho fungování. Analytické ani
+                    marketingové cookies nejsou nasazeny, proto se nezobrazuje lišta souhlasu. Vložené služby třetích
+                    stran (např. mapy) mohou používat vlastní cookies – řídí se pravidly dané služby a lze je omezit v
+                    nastavení prohlížeče.
+                </p>
+                <p class="mt-4">
+                    <strong>Právní základ:</strong> ePrivacy (Směrnice 2002/58/ES) a zákon č. 127/2005 Sb. o
+                    elektronických komunikacích vyžadují souhlas pro cookies, které nejsou technicky nezbytné. Protože
+                    zde používám pouze nezbytné cookies, souhlas není potřeba. Tato informace je poskytována v rámci
+                    transparentnosti.
+                </p>
+
+                <h2 class="text-2xl font-bold text-primary mt-8 mb-4">Vaše práva</h2>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>právo na přístup k údajům,</li>
+                    <li>právo na opravu a doplnění,</li>
+                    <li>právo na výmaz („být zapomenut“) a omezení zpracování,</li>
+                    <li>právo na přenositelnost údajů,</li>
+                    <li>právo vznést námitku (zejména proti zpracování z oprávněného zájmu),</li>
+                    <li>právo podat stížnost u Úřadu pro ochranu osobních údajů (uoou.cz).</li>
+                </ul>
+                <p class="mt-4">Svá práva uplatníte jednoduše e‑mailem na <a href="mailto:info@opravimpocitac.cz"
+                        class="text-secondary hover:underline">info@opravimpocitac.cz</a>.</p>
+
+                <h2 class="text-2xl font-bold text-primary mt-8 mb-4">Bezpečnost</h2>
+                <p>
+                    Přijímám přiměřená technická a organizační opatření k ochraně vašich údajů. Přestože žádný systém
+                    není 100% bezpečný, minimalizuji rizika a zpracování omezuji na nezbytně nutný rozsah.
+                </p>
+
+                <h2 class="text-2xl font-bold text-primary mt-8 mb-4">Aktualizace zásad</h2>
+                <p>
+                    Tyto zásady mohu průběžně upravovat, aby odrážely skutečný stav zpracování. Aktuální verze je vždy
+                    dostupná na této stránce.
+                </p>
+                <p class="mt-4 text-sm text-slate-900">Poslední aktualizace: 8. 9. 2025</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-6 flex justify-center">
+                <img src="Assets/logo-white.svg" alt="Opravím počítač"
+                    class="h-10 w-auto opacity-80 hover:opacity-100 transition duration-300">
+            </div>
+            <p class="mb-4 text-sm">
+                Nepoužívám analytické ani marketingové cookies. Pouze technické nutné pro provoz webu. <a
+                    href="zasady.html" class="text-secondary hover:underline">Více v zásadách</a>.
+            </p>
+            <p class="text-sm">&copy; 2024 Petr Urban - Servis počítačů. Všechna práva vyhrazena.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>

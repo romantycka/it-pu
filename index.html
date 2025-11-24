@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="cs" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petr Urban - Servis počítačů Blansko a Boskovice</title>
+    <link rel="canonical" href="https://opravimpocitac.cz/">
+    <meta name="description"
+        content="Profesionální servis počítačů a notebooků u vás doma. Blansko, Boskovice a okolí. Rychle a spolehlivě.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://opravimpocitac.cz/">
+    <meta property="og:title" content="Petr Urban - Servis počítačů Blansko a Boskovice">
+    <meta property="og:description"
+        content="Profesionální servis počítačů a notebooků u vás doma. Blansko, Boskovice a okolí. Rychle a spolehlivě.">
+    <meta property="og:image" content="https://opravimpocitac.cz/Assets/logo.svg">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#0f172a', // Slate 900
+                        secondary: '#f97316', // Orange 500
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-bg {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.7)), url('Assets/hero_repair_1763626740594.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="font-sans text-slate-800 antialiased bg-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-24 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="flex items-center">
+                        <img src="Assets/logo.svg" alt="Opravím počítač" class="h-12 w-auto">
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#proc-my" class="text-slate-600 hover:text-primary transition">Proč já</a>
+                    <a href="#sluzby" class="text-slate-600 hover:text-primary transition">Služby</a>
+                    <a href="#cenik" class="text-slate-600 hover:text-primary transition">Ceník</a>
+                    <a href="#kontakt"
+                        class="px-4 py-2 rounded-md bg-secondary text-white hover:bg-orange-600 transition font-medium">Kontakt</a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-primary focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#proc-my"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Proč
+                    já</a>
+                <a href="#sluzby"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Služby</a>
+                <a href="#cenik"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Ceník</a>
+                <a href="#kontakt"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-secondary font-bold">Kontakt</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative hero-bg h-screen min-h-[600px] flex items-center text-white pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="max-w-3xl">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                    Počítač stávkuje? <br>
+                    <span class="text-secondary">Přijedu a opravím ho <br> u vás doma.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-200 mb-8 max-w-2xl">
+                    Profesionální servis počítačů a notebooků pro Blansko, Boskovice <br> a okolí. Rychle, spolehlivě a
+                    bez
+                    starostí.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="tel:+420704176526"
+                        class="inline-flex justify-center items-center px-8 py-4 border border-transparent text-lg font-medium rounded-md text-white bg-secondary hover:bg-orange-600 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                            </path>
+                        </svg>
+                        Zavolat na 704 176 526
+                    </a>
+                    <a href="#sluzby"
+                        class="inline-flex justify-center items-center px-8 py-4 border border-white text-lg font-medium rounded-md text-white hover:bg-white hover:text-primary transition">
+                        Zobrazit služby
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Windows 10 End of Support Banner -->
+    <section class="bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-8 reveal">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between text-center md:text-left">
+            <div class="mb-4 md:mb-0">
+                <span class="font-bold bg-white/20 px-2 py-1 rounded text-sm mr-2">DŮLEŽITÉ</span>
+                <span class="font-medium">Končí podpora Windows 10. Váš počítač může být v ohrožení.</span>
+            </div>
+            <a href="konec-windows-10.html"
+                class="bg-white text-blue-600 px-6 py-2 rounded-full font-bold hover:bg-blue-50 transition shadow-md whitespace-nowrap">
+                Zjistit více
+            </a>
+        </div>
+    </section>
+
+    <!-- Why Us Section -->
+    <section id="proc-my" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2 reveal">
+                    <img src="Assets/technician_hands_1763626747638.png" alt="Technik při práci"
+                        class="rounded-lg shadow-2xl w-full object-cover h-[400px]">
+                </div>
+                <div class="lg:w-1/2 reveal">
+                    <h2 class="text-3xl md:text-4xl font-bold text-primary mb-6">Servis bez nutnosti cestování</h2>
+                    <p class="text-lg text-slate-600 mb-8">
+                        Nechte těžký počítač na stole. Specializuji se na servis přímo u zákazníka. Pokud to povaha
+                        opravy vyžaduje, zařízení si sám odvezu a opravené zase přivezu zpět.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 p-3 bg-blue-50 rounded-lg">
+                                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-xl font-semibold text-primary mb-1">Pohodlí</h3>
+                                <p class="text-slate-600">Diagnostika a drobné opravy probíhají u vás.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 p-3 bg-blue-50 rounded-lg">
+                                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-xl font-semibold text-primary mb-1">Úspora času</h3>
+                                <p class="text-slate-600">Nemusíte jezdit do servisu a čekat ve frontě.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 p-3 bg-blue-50 rounded-lg">
+                                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-xl font-semibold text-primary mb-1">Férový přístup</h3>
+                                <p class="text-slate-600">Vždy víte, co a za kolik opravuji.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="sluzby" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">Služby</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto">Komplexní péče o vaše IT vybavení.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div
+                    class="bg-white rounded-xl shadow-md hover:shadow-xl transition p-8 border-t-4 border-secondary reveal">
+                    <div
+                        class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-6 text-secondary">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-4">Počítače a Notebooky</h3>
+                    <ul class="space-y-3 text-slate-600">
+                        <li class="flex items-center"><span
+                                class="w-2 h-2 bg-secondary rounded-full mr-2"></span>Zrychlení zařízení (SSD, RAM)</li>
+                        <li class="flex items-center"><span
+                                class="w-2 h-2 bg-secondary rounded-full mr-2"></span>Softwarový servis (Windows,
+                            odvirování)</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-secondary rounded-full mr-2"></span>Údržba
+                            a čištění</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-secondary rounded-full mr-2"></span>Stavba
+                            PC na míru</li>
+                    </ul>
+                </div>
+
+                <!-- Service Card 2 -->
+                <div
+                    class="bg-white rounded-xl shadow-md hover:shadow-xl transition p-8 border-t-4 border-primary reveal">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6 text-primary">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-4">Sítě a příslušenství</h3>
+                    <ul class="space-y-3 text-slate-600">
+                        <li class="flex items-center"><span
+                                class="w-2 h-2 bg-primary rounded-full mr-2"></span>Nastavení internetu a WiFi</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-primary rounded-full mr-2"></span>Zapojení
+                            tiskáren</li>
+                    </ul>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div
+                    class="bg-white rounded-xl shadow-md hover:shadow-xl transition p-8 border-t-4 border-slate-400 reveal">
+                    <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-6 text-slate-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-4">Specializace u notebooků</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Zaměřuji se na softwarový servis a zrychlení. Hardwarové opravy (displeje) řeším
+                        zprostředkováním autorizovaného servisu, vy se o nic nestaráte.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="cenik" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">Ceník</h2>
+                <p class="text-lg text-slate-600">Jasné a transparentní ceny bez skrytých poplatků.</p>
+            </div>
+
+            <div class="bg-slate-50 rounded-2xl shadow-lg overflow-hidden mb-12 reveal">
+                <div class="p-6 md:p-8">
+                    <table class="w-full text-left border-collapse">
+                        <tbody class="divide-y divide-slate-200">
+                            <tr class="hover:bg-white transition">
+                                <td class="py-4 text-lg font-medium text-primary">První hodina práce</td>
+                                <td class="py-4 text-lg font-bold text-secondary text-right">490 Kč</td>
+                            </tr>
+                            <tr class="hover:bg-white transition">
+                                <td class="py-4 text-lg text-slate-600">Každá další započatá 1/4 hodina</td>
+                                <td class="py-4 text-lg font-bold text-primary text-right">99 Kč</td>
+                            </tr>
+                            <tr class="hover:bg-white transition">
+                                <td class="py-4 text-lg text-slate-600">Vzdálená správa (30 min)</td>
+                                <td class="py-4 text-lg font-bold text-primary text-right">250 Kč</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-primary p-6 md:p-8 text-white">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-xl font-bold mb-4 text-secondary">Doprava</h4>
+                            <ul class="space-y-2">
+                                <li class="flex justify-between"><span>Blansko a okolí do 10 km:</span> <span
+                                        class="font-bold text-secondary">ZDARMA</span></li>
+                                <li class="flex justify-between"><span>Ostatní:</span> <span class="font-bold">4
+                                        Kč/km</span></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold mb-4 text-secondary">Příplatky</h4>
+                            <ul class="space-y-2">
+                                <li class="flex justify-between"><span>Večerní servis/Sobota:</span> <span
+                                        class="font-bold">+500 Kč</span></li>
+                                <li class="flex justify-between"><span>Neděle a svátky:</span> <span
+                                        class="font-bold">+1000 Kč</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="mt-8 text-center text-sm opacity-80">Nejsem plátce DPH.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="reference" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">Co říkají moji zákazníci</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto">Spokojenost klientů je pro mě na prvním místě.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="bg-white p-8 rounded-xl shadow-md border border-slate-100 reveal">
+                    <div class="flex text-secondary mb-4">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                    </div>
+                    <p class="text-slate-600 italic mb-6">"Moc děkuji panu Urbanovi za záchranu mého notebooku. Jsem
+                        starší člověk a počítačům moc nerozumím, ale pan Urban mi vše vysvětlil tak, že jsem tomu
+                        rozuměla i já. Velmi trpělivý a slušný člověk."</p>
+                    <p class="font-bold text-primary">- Marie Novotná, Blansko</p>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="bg-white p-8 rounded-xl shadow-md border border-slate-100 reveal">
+                    <div class="flex text-secondary mb-4">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                    </div>
+                    <p class="text-slate-600 italic mb-6">"Velká výhoda je, že pan Urban přijede až domů. Nemusela jsem
+                        nikam tahat těžký počítač a hledat servis ve městě. Oprava proběhla rychle a za rozumnou cenu."
+                    </p>
+                    <p class="font-bold text-primary">- Jana K., Boskovice</p>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="bg-white p-8 rounded-xl shadow-md border border-slate-100 reveal">
+                    <div class="flex text-secondary mb-4">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                    </div>
+                    <p class="text-slate-600 italic mb-6">"Konečně někdo, kdo jen nemluví "počítačovou řečí", ale
+                        normálně poradí. Doporučuji všem, kteří hledají spolehlivý servis."</p>
+                    <p class="font-bold text-primary">- Pavel Dvořák, Rájec-Jestřebí</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="kontakt" class="py-20 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Kontaktujte mě</h2>
+                <p class="text-slate-300 text-lg max-w-2xl mx-auto">
+                    Máte problém s počítačem? Zavolejte mi, napište email<br> nebo využijte formulář níže.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <!-- Contact Info -->
+                <div class="reveal">
+                    <div class="space-y-8">
+                        <div class="flex items-center">
+                            <div
+                                class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-secondary mr-4 flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-400">Telefon</p>
+                                <a href="tel:+420704176526"
+                                    class="text-xl font-bold hover:text-secondary transition">+420 704 176 526</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <div
+                                class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-secondary mr-4 flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-400">Email</p>
+                                <a href="mailto:info@opravimpocitac.cz"
+                                    class="text-xl font-bold hover:text-secondary transition">info@opravimpocitac.cz</a>
+                            </div>
+                        </div>
+
+
+
+                        <div class="flex items-center">
+                            <div
+                                class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-secondary mr-4 flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-400">Adresa (sídlo)</p>
+                                <p class="text-xl font-bold">Olomučany 187, 679 03</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-10 pt-8 border-t border-slate-800">
+                        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <div class="text-slate-400">
+                                <p>IČ: 88650324</p>
+                                <p>Jméno: Petr Urban</p>
+                            </div>
+                            <a href="https://www.facebook.com/profile.php?id=61555772222179" target="_blank"
+                                rel="noopener noreferrer" class="text-slate-400 hover:text-secondary transition">
+                                <span class="sr-only">Facebook</span>
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd"
+                                        d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="bg-white text-slate-800 p-8 rounded-xl shadow-2xl reveal">
+                    <h3 class="text-2xl font-bold text-primary mb-6">Napište mi</h3>
+                    <form action="https://formsubmit.co/info@opravimpocitac.cz" method="POST" class="space-y-4">
+                        <!-- Spam Protection -->
+                        <input type="hidden" name="_captcha" value="true">
+                        <input type="text" name="_honey" style="display:none">
+                        <input type="hidden" name="_subject" value="Nová zpráva z webu Opravím počítač">
+                        <input type="hidden" name="_next" value="https://opravimpocitac.cz/dekuji.html">
+
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Jméno a
+                                příjmení</label>
+                            <input type="text" id="name" name="name" required
+                                class="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                            <input type="email" id="email" name="email" required
+                                class="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition">
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-slate-700 mb-1">Telefon</label>
+                            <input type="tel" id="phone" name="phone" required
+                                class="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-slate-700 mb-1">Zpráva</label>
+                            <textarea id="message" name="message" rows="4" required
+                                class="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-secondary text-white font-bold py-3 px-6 rounded-md hover:bg-orange-600 transition transform hover:-translate-y-0.5 shadow-md">
+                            Odeslat zprávu
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-slate-800 text-center text-slate-500 text-sm">
+            <div class="mb-6 flex justify-center">
+                <img src="Assets/logo-white.svg" alt="Petr Urban Servis"
+                    class="h-10 w-auto opacity-80 hover:opacity-100 transition duration-300">
+            </div>
+            <p class="mb-4">
+                Nepoužívám analytické ani marketingové cookies. Pouze technické nutné pro provoz webu. <a
+                    href="zasady.html" class="text-secondary hover:underline">Více v zásadách</a>.
+            </p>
+            <p>&copy; 2024 Petr Urban - Servis počítačů. Všechna práva vyhrazena.</p>
+        </div>
+    </section>
+
+    <script>
+        // Mobile menu toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                menu.classList.add('hidden'); // Close mobile menu on click
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Scroll Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    </script>
+</body>
+
+</html>
