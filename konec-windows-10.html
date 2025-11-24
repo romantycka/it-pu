@@ -425,6 +425,26 @@
             menu.classList.toggle('hidden');
         });
 
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return; // Ignore empty hash links
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+                    // Check if the mobile menu exists before trying to close it
+                    if (menu) {
+                        menu.classList.add('hidden'); // Close mobile menu on click
+                    }
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
         // Scroll Animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
