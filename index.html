@@ -523,12 +523,13 @@
                 <!-- Contact Form -->
                 <div class="bg-white text-slate-800 p-8 rounded-xl shadow-2xl reveal">
                     <h3 class="text-2xl font-bold text-primary mb-6">Napište mi</h3>
-                    <form action="https://formsubmit.co/info@opravimpocitac.cz" method="POST" class="space-y-4">
+                    <form action="https://api.web3forms.com/submit" method="POST" class="space-y-4">
+                        <input type="hidden" name="access_key" value="d3d34722-a483-4c95-9b17-7134ae6d764a">
                         <!-- Spam Protection -->
-                        <input type="hidden" name="_captcha" value="true">
-                        <input type="text" name="_honey" style="display:none">
-                        <input type="hidden" name="_subject" value="Nová zpráva z webu Opravím počítač">
-                        <input type="hidden" name="_next" value="https://opravimpocitac.cz/dekuji.html">
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                        <input type="hidden" name="subject" value="Nová zpráva z webu Opravím počítač">
+                        <input type="hidden" name="redirect" value="https://opravimpocitac.cz/dekuji.html">
+                        <input type="hidden" name="from_name" value="Nová zpráva od klienta">
 
                         <div>
                             <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Jméno a
