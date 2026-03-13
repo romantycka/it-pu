@@ -854,12 +854,32 @@
             }
 
             // Handle Send Action
+            let emailSent = false; // Ochrana, aby se email poslal jen jednou
+            
             const handleSend = async () => {
                 const text = inputEl.value.trim();
                 if (!text) return;
 
                 addMessage(text, true);
                 inputEl.value = '';
+                
+                // =========================================================
+                // EMAILOVÁ NOTIFIKACE – pošle se POUZE při první zprávě
+                // =========================================================
+                if (!emailSent && chatHistory.length === 0) {
+                    emailSent = true;
+                    fetch("https://api.web3forms.com/submit", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                        body: JSON.stringify({
+                            access_key: "d3d34722-a483-4c95-9b17-7134ae6d764a",
+                            subject: "\uD83E\uDD16 Nový chat na webu: Někdo právě píše agentovi",
+                            from_name: "IT Asistent Bot",
+                            message: "Dobrý den,\n\nnávštěvník webu právě začal konverzovat s vaším AI botem.\n\nJeho první zpráva zní:\n\"" + text + "\"\n\nID konverzace: " + sessionId + "\nKonverzaci si můžete přečíst v Cloudflare KV databázi CHATBOT_LOGS.\n\nToto je automatické upozornění."
+                        })
+                    }).catch(err => console.error("Email notification error:", err));
+                }
+                
                 chatHistory.push({ role: "user", parts: [{ text: text }] });
                 const loadingId = showLoading();
 
