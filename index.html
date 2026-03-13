@@ -846,6 +846,12 @@
             // URL vašeho Cloudflare Workeru
             const WORKER_URL = "https://nameless-band-880e.petrurban-a72.workers.dev/"; 
             let chatHistory = [];
+            // Unikátní ID pro danou konverzaci (např. čas spuštění chatu)
+            let sessionId = sessionStorage.getItem('chatbot_session_id');
+            if (!sessionId) {
+                sessionId = Date.now().toString();
+                sessionStorage.setItem('chatbot_session_id', sessionId);
+            }
 
             // Handle Send Action
             const handleSend = async () => {
@@ -859,14 +865,20 @@
 
                 try {
                     if (WORKER_URL) {
-                        const response = await fetch(WORKER_URL, {
+                        // Připojíme SID k URL
+                        const urlWithSession = `${WORKER_URL}?sid=${sessionId}`;
+                        
+                        const response = await fetch(urlWithSession, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ messages: chatHistory })
                         });
+                        
                         if (!response.ok) throw new Error('Chyba komunikace se serverem');
                         const data = await response.json();
                         removeLoading(loadingId);
+                        
+                        // Zapsání odpovědi
                         chatHistory.push({ role: "model", parts: [{ text: data.reply }] });
                         addMessage(data.reply, false);
                     } else {
