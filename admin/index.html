@@ -106,6 +106,7 @@
         .line-clamp-2 {
             display: -webkit-box;
             -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -133,6 +134,36 @@
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: rgba(255,255,255,0.1);
             border-radius: 2px;
+        }
+
+        /* Order form modal */
+        .modal-overlay {
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.modal-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .modal-panel {
+            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+        }
+        .modal-hidden .modal-panel {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        .client-dropdown {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .client-option:active {
+            background: rgba(59,130,246,0.2);
+        }
+        .item-row {
+            animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -359,6 +390,132 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- VIEW: ORDER FORM (fullscreen modal)                          -->
+    <!-- ============================================================ -->
+    <div id="modal-order" class="modal-overlay modal-hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm">
+        <div class="modal-panel absolute inset-0 animated-gradient flex flex-col">
+            <!-- Modal Header -->
+            <header class="bg-white/5 border-b border-white/10 px-4 sm:px-6 py-4 flex items-center gap-3 flex-shrink-0">
+                <button id="btn-close-order" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition min-w-[44px] min-h-[44px] flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <h2 class="text-lg font-bold text-white">Nová zakázka</h2>
+            </header>
+
+            <!-- Modal Body -->
+            <div class="flex-1 overflow-y-auto custom-scrollbar px-4 sm:px-6 py-5">
+                <div class="max-w-2xl mx-auto space-y-6">
+
+                    <!-- Client Section -->
+                    <section class="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5">
+                        <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                            Klient
+                        </h3>
+                        <!-- Client Search -->
+                        <div class="relative" id="client-search-wrap">
+                            <input type="text" id="client-search" placeholder="Vyhledat klienta…" autocomplete="off"
+                                class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-base placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition min-h-[44px]">
+                            <div id="client-dropdown" class="client-dropdown hidden absolute left-0 right-0 top-full mt-1 bg-slate-800 border border-white/10 rounded-xl shadow-2xl z-10 overflow-hidden"></div>
+                        </div>
+                        <!-- Selected Client Badge -->
+                        <div id="selected-client" class="hidden mt-3 bg-blue-500/10 border border-blue-500/20 rounded-xl px-4 py-3 flex items-center justify-between">
+                            <div>
+                                <span id="selected-client-name" class="text-white text-sm font-medium"></span>
+                                <span id="selected-client-distance" class="text-slate-400 text-xs ml-2"></span>
+                            </div>
+                            <button id="btn-clear-client" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+                        <!-- New Client Toggle -->
+                        <button id="btn-toggle-new-client" class="mt-3 text-blue-400 text-sm font-medium hover:text-blue-300 transition flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                            Nový klient
+                        </button>
+                        <!-- New Client Form -->
+                        <div id="new-client-form" class="hidden mt-3 space-y-3 bg-white/5 border border-white/10 rounded-xl p-4">
+                            <input type="text" id="nc-name" placeholder="Jméno a příjmení *" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-base placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition min-h-[44px]">
+                            <input type="text" id="nc-address" placeholder="Adresa" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-base placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition min-h-[44px]">
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="tel" id="nc-phone" placeholder="Telefon" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-base placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition min-h-[44px]">
+                                <input type="email" id="nc-email" placeholder="E-mail" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-base placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition min-h-[44px]">
+                            </div>
+                            <input type="number" id="nc-distance" placeholder="Vzdálenost v km (jednosměrně)" step="0.1" min="0" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-base placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition min-h-[44px]">
+                        </div>
+                    </section>
+
+                    <!-- Description Section -->
+                    <section class="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5">
+                        <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                            Popis problému
+                        </h3>
+                        <textarea id="order-description" rows="3" placeholder="Popište problém nebo požadavek klienta…"
+                            class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-base placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition resize-none"></textarea>
+                    </section>
+
+                    <!-- Surcharges Section -->
+                    <section class="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5">
+                        <h3 class="text-sm font-semibold text-slate-300 mb-3">Příplatky</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:bg-white/10 transition min-h-[44px]">
+                                <input type="checkbox" id="surcharge-evening" class="w-5 h-5 rounded accent-amber-500">
+                                <span class="text-white text-sm flex-1">Večerní servis / Sobota</span>
+                                <span class="text-amber-400 text-sm font-bold">+500 Kč</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:bg-white/10 transition min-h-[44px]">
+                                <input type="checkbox" id="surcharge-weekend" class="w-5 h-5 rounded accent-red-500">
+                                <span class="text-white text-sm flex-1">Neděle / Svátek</span>
+                                <span class="text-red-400 text-sm font-bold">+1 000 Kč</span>
+                            </label>
+                        </div>
+                    </section>
+
+                    <!-- Items Section -->
+                    <section class="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5">
+                        <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                            Položky
+                        </h3>
+                        <div id="items-list" class="space-y-3"></div>
+                        <button id="btn-add-item" class="mt-3 w-full py-3 border-2 border-dashed border-white/10 rounded-xl text-slate-400 text-sm font-medium hover:border-blue-500/40 hover:text-blue-400 transition min-h-[44px] flex items-center justify-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                            Přidat položku
+                        </button>
+                    </section>
+
+                    <!-- Total -->
+                    <div class="bg-gradient-to-r from-blue-600/20 to-indigo-600/20 border border-blue-500/20 rounded-xl p-4 sm:p-5 flex items-center justify-between">
+                        <span class="text-white font-semibold">Celkem</span>
+                        <span id="order-total" class="text-2xl font-bold text-white">0 Kč</span>
+                    </div>
+
+                    <!-- Save Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-3 pb-6">
+                        <button id="btn-save-draft"
+                            class="flex-1 py-3.5 bg-white/5 border border-white/10 text-white font-semibold rounded-xl hover:bg-white/10 transition min-h-[48px] flex items-center justify-center gap-2 text-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+                            Uložit jako koncept
+                        </button>
+                        <button id="btn-save-done"
+                            class="flex-1 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-indigo-500 transition shadow-lg shadow-blue-600/20 min-h-[48px] flex items-center justify-center gap-2 text-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                            Uložit jako dokončenou
+                        </button>
+                    </div>
+
+                    <!-- Save Error -->
+                    <div id="save-error" class="hidden bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-red-300 text-sm mb-4"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
     <!-- SUPABASE + APP LOGIC                                         -->
     <!-- ============================================================ -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -406,10 +563,41 @@
             const fabBtn = document.getElementById('fab-new-order');
             const filterTabs = document.querySelectorAll('.filter-tab');
 
+            // --- DOM References: Order Form Modal ---
+            const modalOrder = document.getElementById('modal-order');
+            const btnCloseOrder = document.getElementById('btn-close-order');
+            const clientSearch = document.getElementById('client-search');
+            const clientDropdown = document.getElementById('client-dropdown');
+            const selectedClientBox = document.getElementById('selected-client');
+            const selectedClientName = document.getElementById('selected-client-name');
+            const selectedClientDistance = document.getElementById('selected-client-distance');
+            const btnClearClient = document.getElementById('btn-clear-client');
+            const btnToggleNewClient = document.getElementById('btn-toggle-new-client');
+            const newClientForm = document.getElementById('new-client-form');
+            const orderDescription = document.getElementById('order-description');
+            const itemsList = document.getElementById('items-list');
+            const btnAddItem = document.getElementById('btn-add-item');
+            const orderTotalEl = document.getElementById('order-total');
+            const btnSaveDraft = document.getElementById('btn-save-draft');
+            const btnSaveDone = document.getElementById('btn-save-done');
+            const saveError = document.getElementById('save-error');
+            const surchargeEvening = document.getElementById('surcharge-evening');
+            const surchargeWeekend = document.getElementById('surcharge-weekend');
+
+            // New client fields
+            const ncName = document.getElementById('nc-name');
+            const ncAddress = document.getElementById('nc-address');
+            const ncPhone = document.getElementById('nc-phone');
+            const ncEmail = document.getElementById('nc-email');
+            const ncDistance = document.getElementById('nc-distance');
+
             // --- State ---
             let allOrders = [];
             let currentFilter = 'all';
             let searchQuery = '';
+            let selectedClient = null;
+            let orderItems = [];
+            let allClients = [];
 
             // ======================================================
             // VIEW SWITCHING
@@ -740,14 +928,399 @@
                 }, 250);
             });
 
-            // Retry button
-            btnRetry.addEventListener('click', () => {
+            // ======================================================
+            // ORDER FORM LOGIC
+            // ======================================================
+
+            async function openOrderForm() {
+                resetOrderForm();
+                modalOrder.classList.remove('modal-hidden');
+                document.body.style.overflow = 'hidden';
+                // Pre-load clients
+                const { data, error } = await supabase.from('clients').select('*').order('name');
+                if (!error) allClients = data;
+            }
+
+            function closeOrderForm() {
+                modalOrder.classList.add('modal-hidden');
+                document.body.style.overflow = '';
                 loadDashboard();
+            }
+
+            function resetOrderForm() {
+                selectedClient = null;
+                allClients = [];
+                currentOrderItems = [];
+                saveError.classList.add('hidden');
+                saveError.textContent = '';
+                
+                clientSearch.value = '';
+                clientSearch.parentElement.classList.remove('hidden');
+                selectedClientBox.classList.add('hidden');
+                newClientForm.classList.add('hidden');
+                btnToggleNewClient.classList.remove('hidden');
+                btnToggleNewClient.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> Nový klient';
+                orderDescription.value = '';
+                itemsList.innerHTML = '';
+                orderTotalEl.textContent = '0 Kč';
+                surchargeEvening.checked = false;
+                surchargeWeekend.checked = false;
+
+                // Reset new client fields
+                ncName.value = '';
+                ncAddress.value = '';
+                ncPhone.value = '';
+                ncEmail.value = '';
+                ncDistance.value = '';
+            }
+
+            // Client Search logic
+            clientSearch.addEventListener('input', () => {
+                const q = clientSearch.value.toLowerCase().trim();
+                if (!q) {
+                    clientDropdown.classList.add('hidden');
+                    return;
+                }
+
+                const filtered = allClients.filter(c => 
+                    c.name.toLowerCase().includes(q) || 
+                    (c.phone && c.phone.includes(q))
+                ).slice(0, 5);
+
+                if (filtered.length > 0) {
+                    clientDropdown.innerHTML = filtered.map(c => `
+                        <div class="client-option px-4 py-3 hover:bg-white/10 cursor-pointer text-white text-sm border-b border-white/5 last:border-0" data-id="${c.id}">
+                            <div class="font-medium">${escapeHtml(c.name)}</div>
+                            <div class="text-xs text-slate-500">${escapeHtml(c.address || 'Bez adresy')}</div>
+                        </div>
+                    `).join('');
+                    clientDropdown.classList.remove('hidden');
+
+                    clientDropdown.querySelectorAll('.client-option').forEach(opt => {
+                        opt.addEventListener('click', () => {
+                            const id = opt.dataset.id;
+                            const client = allClients.find(c => c.id === id);
+                            selectClient(client);
+                        });
+                    });
+                } else {
+                    clientDropdown.innerHTML = '<div class="px-4 py-3 text-slate-500 text-sm italic">Žádný klient nenalezen</div>';
+                    clientDropdown.classList.remove('hidden');
+                }
             });
 
-            // FAB button (placeholder for Phase 4)
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!clientSearch.contains(e.target) && !clientDropdown.contains(e.target)) {
+                    clientDropdown.classList.add('hidden');
+                }
+            });
+
+            function selectClient(client) {
+                selectedClient = client;
+                clientDropdown.classList.add('hidden');
+                clientSearch.value = '';
+                clientSearch.parentElement.classList.add('hidden');
+                btnToggleNewClient.classList.add('hidden');
+                newClientForm.classList.add('hidden');
+
+                selectedClientName.textContent = client.name;
+                selectedClientDistance.textContent = `(${client.distance_km || 0} km)`;
+                selectedClientBox.classList.remove('hidden');
+
+                // Auto-add transport row
+                addTransportRow(client.distance_km);
+            }
+
+            btnClearClient.addEventListener('click', () => {
+                selectedClient = null;
+                selectedClientBox.classList.add('hidden');
+                clientSearch.parentElement.classList.remove('hidden');
+                btnToggleNewClient.classList.remove('hidden');
+                
+                // Remove transport row if any
+                const transportRow = currentOrderItems.find(i => i.type === 'doprava');
+                if (transportRow) {
+                    removeItem(transportRow.id);
+                }
+                recalculateTotal();
+            });
+
+            btnToggleNewClient.addEventListener('click', () => {
+                const hidden = newClientForm.classList.contains('hidden');
+                newClientForm.classList.toggle('hidden');
+                btnToggleNewClient.innerHTML = hidden 
+                    ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg> Zrušit nového klienta'
+                    : '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> Nový klient';
+            });
+
+            // Items management
+            let currentOrderItems = [];
+
+            function addItem(type = 'práce', description = '', quantity = 1, unitPrice = 345) {
+                const id = Math.random().toString(36).substr(2, 9);
+                
+                // Defaults by type
+                if (type === 'doprava' && !description) description = 'Doprava';
+                if (type === 'práce' && !description) description = 'Servisní práce';
+
+                const item = { id, type, description, quantity, unitPrice };
+                currentOrderItems.push(item);
+                renderItemRow(item);
+                recalculateTotal();
+            }
+
+            function renderItemRow(item) {
+                const div = document.createElement('div');
+                div.className = 'item-row bg-white/5 border border-white/10 rounded-xl p-3 flex flex-col gap-3';
+                div.dataset.id = item.id;
+
+                div.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <select class="item-type bg-slate-800 border border-white/10 rounded-lg text-white text-xs px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
+                            <option value="práce" ${item.type === 'práce' ? 'selected' : ''}>Práce</option>
+                            <option value="doprava" ${item.type === 'doprava' ? 'selected' : ''}>Doprava</option>
+                            <option value="materiál" ${item.type === 'materiál' ? 'selected' : ''}>Materiál</option>
+                            <option value="příplatek" ${item.type === 'příplatek' ? 'selected' : ''}>Příplatek</option>
+                        </select>
+                        <input type="text" class="item-desc flex-1 bg-transparent border-b border-white/10 text-white text-sm px-1 py-1 focus:outline-none focus:border-blue-500/50" placeholder="Popis položky…" value="${escapeHtml(item.description)}">
+                        <button class="btn-remove-item text-slate-500 hover:text-red-400 p-1 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-2">
+                            <input type="number" step="0.5" class="item-qty w-16 bg-white/5 border border-white/10 rounded-lg text-white text-sm px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500/50" value="${item.quantity}">
+                            <span class="text-slate-500 text-xs">×</span>
+                            <input type="number" class="item-price w-20 bg-white/5 border border-white/10 rounded-lg text-white text-sm px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500/50" value="${item.unitPrice}">
+                            <span class="text-slate-500 text-xs text-nowrap">Kč</span>
+                        </div>
+                        <div class="item-total text-white text-sm font-bold">${formatPrice(item.quantity * item.unitPrice)}</div>
+                    </div>
+                `;
+
+                // Event Listeners
+                const typeSelect = div.querySelector('.item-type');
+                const qtyInput = div.querySelector('.item-qty');
+                const priceInput = div.querySelector('.item-price');
+                const descInput = div.querySelector('.item-desc');
+                const removeBtn = div.querySelector('.btn-remove-item');
+
+                typeSelect.addEventListener('change', () => {
+                    item.type = typeSelect.value;
+                    if (item.type === 'práce') item.unitPrice = 345;
+                    else if (item.type === 'doprava') item.unitPrice = 5;
+                    priceInput.value = item.unitPrice;
+                    recalculateItem(item, div);
+                });
+
+                qtyInput.addEventListener('input', () => {
+                    item.quantity = parseFloat(qtyInput.value) || 0;
+                    recalculateItem(item, div);
+                });
+
+                priceInput.addEventListener('input', () => {
+                    item.unitPrice = parseFloat(priceInput.value) || 0;
+                    recalculateItem(item, div);
+                });
+
+                descInput.addEventListener('input', () => {
+                    item.description = descInput.value;
+                });
+
+                removeBtn.addEventListener('click', () => {
+                    removeItem(item.id);
+                });
+
+                itemsList.appendChild(div);
+            }
+
+            function recalculateItem(item, div) {
+                const totalEl = div.querySelector('.item-total');
+                totalEl.textContent = formatPrice(item.quantity * item.unitPrice);
+                recalculateTotal();
+            }
+
+            function removeItem(id) {
+                currentOrderItems = currentOrderItems.filter(i => i.id !== id);
+                const row = itemsList.querySelector(`[data-id="${id}"]`);
+                if (row) row.remove();
+                recalculateTotal();
+            }
+
+            function recalculateTotal() {
+                const total = currentOrderItems.reduce((sum, i) => sum + (i.quantity * i.unitPrice), 0);
+                orderTotalEl.textContent = formatPrice(total);
+            }
+
+            function addTransportRow(distance) {
+                // Remove existing transport rows
+                currentOrderItems = currentOrderItems.filter(i => i.type !== 'doprava');
+                itemsList.querySelectorAll('.item-row').forEach(row => {
+                    const typeSelect = row.querySelector('.item-type');
+                    if (typeSelect.value === 'doprava') row.remove();
+                });
+
+                const km = parseFloat(distance) || 0;
+                let q = 1;
+                let p = 0;
+                let desc = 'Doprava (Blansko a okolí)';
+
+                if (km > 10) {
+                    q = km * 2; // Tam i zpět
+                    p = 5;
+                    desc = `Doprava (${km} km)`;
+                } else if (km > 0) {
+                    desc = `Doprava ZDARMA (${km} km)`;
+                }
+
+                addItem('doprava', desc, q, p);
+            }
+
+            // Surcharge logic
+            surchargeEvening.addEventListener('change', () => {
+                const type = 'příplatek';
+                const desc = 'Večerní servis / Sobota';
+                if (surchargeEvening.checked) {
+                    addItem(type, desc, 1, 500);
+                } else {
+                    const item = currentOrderItems.find(i => i.type === type && i.description === desc);
+                    if (item) removeItem(item.id);
+                }
+            });
+
+            surchargeWeekend.addEventListener('change', () => {
+                const type = 'příplatek';
+                const desc = 'Neděle / Svátek';
+                if (surchargeWeekend.checked) {
+                    addItem(type, desc, 1, 1000);
+                } else {
+                    const item = currentOrderItems.find(i => i.type === type && i.description === desc);
+                    if (item) removeItem(item.id);
+                }
+            });
+
+            btnAddItem.addEventListener('click', () => addItem());
+
+            // Save order logic
+            async function saveOrder(status) {
+                saveError.classList.add('hidden');
+                
+                // 1. Validation
+                let clientId = selectedClient?.id;
+                
+                // If creating new client
+                if (!clientId && !newClientForm.classList.contains('hidden')) {
+                    const name = ncName.value.trim();
+                    if (!name) {
+                        saveError.textContent = 'Zadejte jméno nového klienta.';
+                        saveError.classList.remove('hidden');
+                        return;
+                    }
+                    
+                    const { data: newClient, error: clientErr } = await supabase
+                        .from('clients')
+                        .insert({
+                            name,
+                            address: ncAddress.value.trim(),
+                            phone: ncPhone.value.trim(),
+                            email: ncEmail.value.trim(),
+                            distance_km: parseFloat(ncDistance.value) || 0
+                        })
+                        .select()
+                        .single();
+
+                    if (clientErr) {
+                        saveError.textContent = 'Chyba při ukládání klienta: ' + clientErr.message;
+                        saveError.classList.remove('hidden');
+                        return;
+                    }
+                    clientId = newClient.id;
+                }
+
+                if (!clientId) {
+                    saveError.textContent = 'Vyberte klienta nebo zadejte nového.';
+                    saveError.classList.remove('hidden');
+                    return;
+                }
+
+                // 2. Generate Order Number
+                const orderNumber = await generateOrderNumber();
+
+                // 3. Save Order (Sequential Async as requested)
+                const total_price = currentOrderItems.reduce((sum, i) => sum + (i.quantity * i.unitPrice), 0);
+                
+                const { data: order, error: orderErr } = await supabase
+                    .from('orders')
+                    .insert({
+                        order_number: orderNumber,
+                        client_id: clientId,
+                        status: status,
+                        description: orderDescription.value.trim(),
+                        total_price: total_price,
+                        date_created: new Date().toISOString(),
+                        date_completed: status === 'dokončena' ? new Date().toISOString() : null
+                    })
+                    .select()
+                    .single();
+
+                if (orderErr) {
+                    saveError.textContent = 'Chyba při ukládání zakázky: ' + orderErr.message;
+                    saveError.classList.remove('hidden');
+                    return;
+                }
+
+                // 4. Save Order Items
+                if (currentOrderItems.length > 0) {
+                    const itemsToSave = currentOrderItems.map(i => ({
+                        order_id: order.id,
+                        item_type: i.type,
+                        description: i.description,
+                        quantity: i.quantity,
+                        unit_price: i.unitPrice,
+                        total: i.quantity * i.unitPrice,
+                        date: new Date().toISOString(),
+                    }));
+
+                    const { error: itemsErr } = await supabase
+                        .from('order_items')
+                        .insert(itemsToSave);
+
+                    if (itemsErr) {
+                        saveError.textContent = 'Zakázka uložena, ale položky selhaly: ' + itemsErr.message;
+                        saveError.classList.remove('hidden');
+                        return;
+                    }
+                }
+
+                closeOrderForm();
+            }
+
+            async function generateOrderNumber() {
+                const now = new Date();
+                const YY = String(now.getFullYear()).slice(-2);
+                const MM = String(now.getMonth() + 1).padStart(2, '0');
+                const DD = String(now.getDate()).padStart(2, '0');
+                const prefix = `${YY}${MM}${DD}/`;
+
+                // Count orders for today
+                const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+                const { count, error } = await supabase
+                    .from('orders')
+                    .select('*', { count: 'exact', head: true })
+                    .gte('date_created', startOfDay);
+
+                const nextNum = (count || 0) + 1;
+                return prefix + String(nextNum).padStart(2, '0');
+            }
+
+            btnSaveDraft.addEventListener('click', () => saveOrder('nová'));
+            btnSaveDone.addEventListener('click', () => saveOrder('dokončena'));
+            btnCloseOrder.addEventListener('click', () => closeOrderForm());
+
+            // FAB button
             fabBtn.addEventListener('click', () => {
-                alert('Formulář zakázky bude implementován ve Fázi 4.');
+                openOrderForm();
             });
 
             // ======================================================
