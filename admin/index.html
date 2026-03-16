@@ -67,6 +67,73 @@
             background-size: 400% 400%;
             animation: gradientShift 12s ease infinite;
         }
+
+        /* Skeleton loading pulse */
+        @keyframes pulse-skeleton {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+        .skeleton {
+            animation: pulse-skeleton 1.5s ease-in-out infinite;
+            background: rgba(255,255,255,0.08);
+            border-radius: 0.5rem;
+        }
+
+        /* Card hover lift */
+        .order-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .order-card:active {
+            transform: scale(0.98);
+        }
+        @media (hover: hover) {
+            .order-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px -5px rgba(0,0,0,0.3);
+            }
+        }
+
+        /* Filter tab active indicator */
+        .filter-tab {
+            transition: all 0.2s ease;
+        }
+        .filter-tab.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        /* Line clamp for description */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* FAB pulse */
+        @keyframes fab-pulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(59,130,246,0.4); }
+            50% { box-shadow: 0 4px 25px rgba(59,130,246,0.6); }
+        }
+        .fab-btn {
+            animation: fab-pulse 3s ease-in-out infinite;
+        }
+        .fab-btn:hover {
+            animation: none;
+            box-shadow: 0 8px 30px rgba(59,130,246,0.5);
+        }
+
+        /* Scrollbar styling */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+        }
     </style>
 </head>
 
@@ -149,12 +216,12 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- VIEW: DASHBOARD (placeholder for Phase 3)                    -->
+    <!-- VIEW: DASHBOARD                                              -->
     <!-- ============================================================ -->
     <div id="view-dashboard" class="view-transition view-hidden min-h-screen flex flex-col">
         <!-- Top Bar -->
-        <header class="bg-white/5 backdrop-blur-xl border-b border-white/10 px-4 sm:px-6 py-4">
-            <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <header class="bg-white/5 backdrop-blur-xl border-b border-white/10 px-4 sm:px-6 py-4 sticky top-0 z-30">
+            <div class="max-w-5xl mx-auto flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <img src="../assets/logo_it_light.png" alt="Opravím počítač" class="h-10 w-auto">
                     <span class="text-white/60 text-sm font-medium hidden sm:inline">Zakázkový systém</span>
@@ -167,43 +234,128 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
-                        Odhlásit se
+                        <span class="hidden sm:inline">Odhlásit se</span>
                     </button>
                 </div>
             </div>
         </header>
 
         <!-- Dashboard Content -->
-        <main class="flex-1 flex items-center justify-center px-4 py-12">
-            <div class="text-center max-w-lg">
-                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-600/20">
-                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+        <main class="flex-1 px-4 sm:px-6 py-6 pb-24 custom-scrollbar overflow-y-auto">
+            <div class="max-w-5xl mx-auto">
+
+                <!-- Stat Cards -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+                    <!-- Nové -->
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
+                            <span class="text-xs text-slate-400 font-medium">Nové</span>
+                        </div>
+                        <div id="stat-new" class="text-2xl sm:text-3xl font-bold text-white">
+                            <div class="skeleton h-8 w-12"></div>
+                        </div>
+                    </div>
+                    <!-- Probíhá -->
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+                            <span class="text-xs text-slate-400 font-medium">Probíhá</span>
+                        </div>
+                        <div id="stat-progress" class="text-2xl sm:text-3xl font-bold text-white">
+                            <div class="skeleton h-8 w-12"></div>
+                        </div>
+                    </div>
+                    <!-- Dokončeno -->
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+                            <span class="text-xs text-slate-400 font-medium">Dokončeno</span>
+                        </div>
+                        <div id="stat-done" class="text-2xl sm:text-3xl font-bold text-white">
+                            <div class="skeleton h-8 w-12"></div>
+                        </div>
+                    </div>
+                    <!-- Tento měsíc -->
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-2.5 h-2.5 rounded-full bg-indigo-500"></div>
+                            <span class="text-xs text-slate-400 font-medium">Tento měsíc</span>
+                        </div>
+                        <div id="stat-monthly-revenue" class="text-xl sm:text-2xl font-bold text-white">
+                            <div class="skeleton h-8 w-20"></div>
+                        </div>
+                        <div id="stat-monthly-count" class="text-xs text-slate-500 mt-1"></div>
+                    </div>
                 </div>
-                <h2 class="text-2xl font-bold text-white mb-3">Přihlášení úspěšné</h2>
-                <p class="text-slate-400 mb-8">Dashboard bude implementován ve Fázi 3.<br>Toto je připravená struktura admin panelu.</p>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <div class="bg-white/5 border border-white/10 rounded-xl p-4">
-                        <div class="text-2xl font-bold text-white">—</div>
-                        <div class="text-xs text-slate-500 mt-1">Zakázky</div>
+
+                <!-- Search + Filters -->
+                <div class="flex flex-col sm:flex-row gap-3 mb-5">
+                    <!-- Search -->
+                    <div class="relative flex-1">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <input type="text" id="search-input" placeholder="Hledat dle jména klienta nebo čísla zakázky…"
+                            class="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/40 transition min-h-[44px]">
                     </div>
-                    <div class="bg-white/5 border border-white/10 rounded-xl p-4">
-                        <div class="text-2xl font-bold text-white">—</div>
-                        <div class="text-xs text-slate-500 mt-1">Klienti</div>
-                    </div>
-                    <div class="bg-white/5 border border-white/10 rounded-xl p-4">
-                        <div class="text-2xl font-bold text-white">—</div>
-                        <div class="text-xs text-slate-500 mt-1">Tento měsíc</div>
-                    </div>
-                    <div class="bg-white/5 border border-white/10 rounded-xl p-4">
-                        <div class="text-2xl font-bold text-white">—</div>
-                        <div class="text-xs text-slate-500 mt-1">Tržby</div>
+                    <!-- Filter tabs -->
+                    <div class="flex bg-white/5 border border-white/10 rounded-xl p-1 gap-0.5 flex-shrink-0">
+                        <button data-filter="all" class="filter-tab active px-3 sm:px-4 py-2 rounded-lg text-sm font-medium text-slate-400 min-h-[36px]">Všechny</button>
+                        <button data-filter="active" class="filter-tab px-3 sm:px-4 py-2 rounded-lg text-sm font-medium text-slate-400 min-h-[36px]">Aktivní</button>
+                        <button data-filter="done" class="filter-tab px-3 sm:px-4 py-2 rounded-lg text-sm font-medium text-slate-400 min-h-[36px]">Dokončené</button>
                     </div>
                 </div>
+
+                <!-- Order List -->
+                <div id="orders-list" class="space-y-3">
+                    <!-- Skeleton loading cards -->
+                    <div class="skeleton h-28 w-full rounded-xl"></div>
+                    <div class="skeleton h-28 w-full rounded-xl"></div>
+                    <div class="skeleton h-28 w-full rounded-xl"></div>
+                </div>
+
+                <!-- Empty state -->
+                <div id="orders-empty" class="hidden text-center py-16">
+                    <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                    </div>
+                    <p class="text-slate-400 font-medium mb-1">Zatím nemáte žádné zakázky</p>
+                    <p class="text-slate-600 text-sm">Vytvořte první zakázku tlačítkem + dole</p>
+                </div>
+
+                <!-- Error state -->
+                <div id="orders-error" class="hidden text-center py-16">
+                    <div class="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <p class="text-slate-400 font-medium mb-3">Nepodařilo se načíst data</p>
+                    <button id="btn-retry"
+                        class="px-5 py-2.5 bg-white/5 border border-white/10 text-slate-300 text-sm font-medium rounded-xl hover:bg-white/10 transition min-h-[44px]">
+                        Zkusit znovu
+                    </button>
+                </div>
+
             </div>
         </main>
+
+        <!-- FAB: + Nová zakázka -->
+        <button id="fab-new-order"
+            class="fab-btn fixed bottom-6 right-6 z-40 w-14 h-14 sm:w-auto sm:h-auto sm:px-5 sm:py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full sm:rounded-xl shadow-xl flex items-center justify-center gap-2 hover:from-blue-500 hover:to-indigo-500 transition-all active:scale-95 min-h-[56px]">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+            </svg>
+            <span class="hidden sm:inline font-semibold text-sm">Nová zakázka</span>
+        </button>
     </div>
 
     <!-- ============================================================ -->
@@ -220,13 +372,13 @@
 
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
                 auth: {
-                    persistSession: false,   // in-memory only — no localStorage
+                    persistSession: false,
                     autoRefreshToken: true,
                     detectSessionInUrl: false
                 }
             });
 
-            // --- DOM References ---
+            // --- DOM References: Login ---
             const viewLogin = document.getElementById('view-login');
             const viewDashboard = document.getElementById('view-dashboard');
             const loginForm = document.getElementById('login-form');
@@ -238,28 +390,51 @@
             const btnText = document.getElementById('login-btn-text');
             const btnSpinner = document.getElementById('login-btn-spinner');
             const btnLogout = document.getElementById('btn-logout');
-            const userEmail = document.getElementById('user-email');
+            const userEmailEl = document.getElementById('user-email');
 
-            // --- View Switching ---
+            // --- DOM References: Dashboard ---
+            const statNew = document.getElementById('stat-new');
+            const statProgress = document.getElementById('stat-progress');
+            const statDone = document.getElementById('stat-done');
+            const statMonthlyRevenue = document.getElementById('stat-monthly-revenue');
+            const statMonthlyCount = document.getElementById('stat-monthly-count');
+            const searchInput = document.getElementById('search-input');
+            const ordersList = document.getElementById('orders-list');
+            const ordersEmpty = document.getElementById('orders-empty');
+            const ordersError = document.getElementById('orders-error');
+            const btnRetry = document.getElementById('btn-retry');
+            const fabBtn = document.getElementById('fab-new-order');
+            const filterTabs = document.querySelectorAll('.filter-tab');
+
+            // --- State ---
+            let allOrders = [];
+            let currentFilter = 'all';
+            let searchQuery = '';
+
+            // ======================================================
+            // VIEW SWITCHING
+            // ======================================================
             function showView(view) {
                 if (view === 'dashboard') {
                     viewLogin.classList.remove('view-visible');
                     viewLogin.classList.add('view-hidden');
                     viewDashboard.classList.remove('view-hidden');
                     viewDashboard.classList.add('view-visible');
+                    loadDashboard();
                 } else {
                     viewDashboard.classList.remove('view-visible');
                     viewDashboard.classList.add('view-hidden');
                     viewLogin.classList.remove('view-hidden');
                     viewLogin.classList.add('view-visible');
-                    // Reset form state
                     loginForm.reset();
                     hideError();
                     setLoading(false);
                 }
             }
 
-            // --- Error Display ---
+            // ======================================================
+            // LOGIN LOGIC (unchanged from Phase 2)
+            // ======================================================
             function showError(message) {
                 errorText.textContent = message;
                 errorBox.classList.remove('hidden');
@@ -270,7 +445,6 @@
                 errorText.textContent = '';
             }
 
-            // --- Loading State ---
             function setLoading(loading) {
                 if (loading) {
                     submitBtn.disabled = true;
@@ -285,7 +459,6 @@
                 }
             }
 
-            // --- Translate Supabase errors to Czech ---
             function translateError(message) {
                 const map = {
                     'Invalid login credentials': 'Nesprávný e-mail nebo heslo.',
@@ -300,7 +473,6 @@
                 return 'Přihlášení se nezdařilo. Zkuste to znovu.';
             }
 
-            // --- Login Handler ---
             loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 hideError();
@@ -316,20 +488,14 @@
                 }
 
                 try {
-                    const { data, error } = await supabase.auth.signInWithPassword({
-                        email,
-                        password
-                    });
-
+                    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
                     if (error) {
                         showError(translateError(error.message));
                         setLoading(false);
                         return;
                     }
-
-                    // Success — show dashboard
                     if (data.user) {
-                        userEmail.textContent = data.user.email;
+                        userEmailEl.textContent = data.user.email;
                     }
                     showView('dashboard');
                 } catch (err) {
@@ -338,25 +504,289 @@
                 }
             });
 
-            // --- Logout Handler ---
             btnLogout.addEventListener('click', async () => {
                 await supabase.auth.signOut();
                 showView('login');
             });
 
-            // --- Auth State Listener (session expired, etc.) ---
             supabase.auth.onAuthStateChange((event, session) => {
                 if (event === 'SIGNED_OUT' || (!session && event === 'TOKEN_REFRESHED')) {
                     showView('login');
                 }
             });
 
-            // --- Initial Auth Guard ---
-            // With persistSession: false, session is always null on page load → show login
+            // ======================================================
+            // DASHBOARD: DATA LOADING
+            // ======================================================
+
+            async function loadDashboard() {
+                showDashboardLoading();
+                ordersError.classList.add('hidden');
+                ordersEmpty.classList.add('hidden');
+
+                try {
+                    // Parallel: load stats + orders
+                    const [statsResult, ordersResult] = await Promise.all([
+                        loadStats(),
+                        loadOrders()
+                    ]);
+
+                    if (statsResult.error) throw statsResult.error;
+                    if (ordersResult.error) throw ordersResult.error;
+
+                    renderStats(statsResult.data);
+                    allOrders = ordersResult.data || [];
+                    renderOrders();
+
+                } catch (err) {
+                    console.error('Dashboard load error:', err);
+                    ordersList.innerHTML = '';
+                    ordersError.classList.remove('hidden');
+                    // Still show 0s in stats
+                    renderStats({ newCount: 0, progressCount: 0, doneCount: 0, monthlyRevenue: 0, monthlyOrderCount: 0 });
+                }
+            }
+
+            async function loadStats() {
+                try {
+                    // Count by status
+                    const [resNew, resProgress, resDone, resMonthly] = await Promise.all([
+                        supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'nová'),
+                        supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'probíhá'),
+                        supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'dokončena'),
+                        loadMonthlyStats()
+                    ]);
+
+                    if (resNew.error) throw resNew.error;
+                    if (resProgress.error) throw resProgress.error;
+                    if (resDone.error) throw resDone.error;
+
+                    return {
+                        data: {
+                            newCount: resNew.count || 0,
+                            progressCount: resProgress.count || 0,
+                            doneCount: resDone.count || 0,
+                            monthlyRevenue: resMonthly.revenue,
+                            monthlyOrderCount: resMonthly.count
+                        }
+                    };
+                } catch (error) {
+                    return { error };
+                }
+            }
+
+            async function loadMonthlyStats() {
+                const now = new Date();
+                const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
+                const { data, error } = await supabase
+                    .from('orders')
+                    .select('total_price')
+                    .gte('date_created', firstOfMonth);
+
+                if (error) throw error;
+
+                const revenue = (data || []).reduce((sum, o) => sum + (parseFloat(o.total_price) || 0), 0);
+                return { revenue, count: (data || []).length };
+            }
+
+            async function loadOrders() {
+                const { data, error } = await supabase
+                    .from('orders')
+                    .select('*, clients(name)')
+                    .order('date_created', { ascending: false });
+
+                return { data, error };
+            }
+
+            // ======================================================
+            // DASHBOARD: RENDERING
+            // ======================================================
+
+            function showDashboardLoading() {
+                // Stats skeleton
+                statNew.innerHTML = '<div class="skeleton h-8 w-12"></div>';
+                statProgress.innerHTML = '<div class="skeleton h-8 w-12"></div>';
+                statDone.innerHTML = '<div class="skeleton h-8 w-12"></div>';
+                statMonthlyRevenue.innerHTML = '<div class="skeleton h-8 w-20"></div>';
+                statMonthlyCount.textContent = '';
+
+                // Orders skeleton
+                ordersList.innerHTML = `
+                    <div class="skeleton h-28 w-full rounded-xl"></div>
+                    <div class="skeleton h-28 w-full rounded-xl"></div>
+                    <div class="skeleton h-28 w-full rounded-xl"></div>
+                `;
+            }
+
+            function renderStats(stats) {
+                statNew.textContent = stats.newCount;
+                statProgress.textContent = stats.progressCount;
+                statDone.textContent = stats.doneCount;
+                statMonthlyRevenue.textContent = formatPrice(stats.monthlyRevenue);
+                statMonthlyCount.textContent = stats.monthlyOrderCount > 0
+                    ? `${stats.monthlyOrderCount} ${pluralOrders(stats.monthlyOrderCount)}`
+                    : 'žádné zakázky';
+            }
+
+            function renderOrders() {
+                const filtered = getFilteredOrders();
+
+                if (filtered.length === 0 && allOrders.length === 0) {
+                    ordersList.innerHTML = '';
+                    ordersEmpty.classList.remove('hidden');
+                    return;
+                }
+
+                ordersEmpty.classList.add('hidden');
+
+                if (filtered.length === 0) {
+                    ordersList.innerHTML = `
+                        <div class="text-center py-12">
+                            <p class="text-slate-500 text-sm">Žádné zakázky neodpovídají filtru</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                ordersList.innerHTML = filtered.map(order => renderOrderCard(order)).join('');
+            }
+
+            function renderOrderCard(order) {
+                const clientName = order.clients?.name || 'Neznámý klient';
+                const statusBadge = getStatusBadge(order.status);
+                const date = order.date_created ? formatDate(order.date_created) : '—';
+                const price = order.total_price ? formatPrice(order.total_price) : '';
+                const description = order.description || 'Bez popisu';
+
+                return `
+                    <div class="order-card bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 cursor-pointer">
+                        <div class="flex items-start justify-between gap-3 mb-3">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                                    <span class="text-white font-semibold text-sm">${escapeHtml(order.order_number || '—')}</span>
+                                    ${statusBadge}
+                                </div>
+                                <p class="text-slate-300 text-sm font-medium">${escapeHtml(clientName)}</p>
+                            </div>
+                            ${price ? `<span class="text-white font-bold text-sm whitespace-nowrap">${price}</span>` : ''}
+                        </div>
+                        <p class="text-slate-500 text-xs line-clamp-2 mb-3">${escapeHtml(description)}</p>
+                        <div class="flex items-center gap-1.5 text-slate-600 text-xs">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            ${date}
+                        </div>
+                    </div>
+                `;
+            }
+
+            function getStatusBadge(status) {
+                const badges = {
+                    'nová': '<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-500/15 text-blue-400 border border-blue-500/20">Nová</span>',
+                    'probíhá': '<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-amber-500/15 text-amber-400 border border-amber-500/20">Probíhá</span>',
+                    'dokončena': '<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">Dokončena</span>',
+                    'fakturováno': '<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-500/15 text-indigo-400 border border-indigo-500/20">Fakturováno</span>',
+                };
+                return badges[status] || `<span class="px-2 py-0.5 rounded-full text-xs font-medium bg-white/10 text-slate-400">${escapeHtml(status || '—')}</span>`;
+            }
+
+            // ======================================================
+            // FILTERING + SEARCH
+            // ======================================================
+
+            function getFilteredOrders() {
+                let filtered = [...allOrders];
+
+                // Filter by status tab
+                if (currentFilter === 'active') {
+                    filtered = filtered.filter(o => o.status === 'nová' || o.status === 'probíhá');
+                } else if (currentFilter === 'done') {
+                    filtered = filtered.filter(o => o.status === 'dokončena' || o.status === 'fakturováno');
+                }
+
+                // Search
+                if (searchQuery) {
+                    const q = searchQuery.toLowerCase();
+                    filtered = filtered.filter(o => {
+                        const clientName = (o.clients?.name || '').toLowerCase();
+                        const orderNumber = (o.order_number || '').toLowerCase();
+                        return clientName.includes(q) || orderNumber.includes(q);
+                    });
+                }
+
+                return filtered;
+            }
+
+            // Filter tabs click
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentFilter = tab.dataset.filter;
+                    renderOrders();
+                });
+            });
+
+            // Search input with debounce
+            let searchTimeout;
+            searchInput.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    searchQuery = searchInput.value.trim();
+                    renderOrders();
+                }, 250);
+            });
+
+            // Retry button
+            btnRetry.addEventListener('click', () => {
+                loadDashboard();
+            });
+
+            // FAB button (placeholder for Phase 4)
+            fabBtn.addEventListener('click', () => {
+                alert('Formulář zakázky bude implementován ve Fázi 4.');
+            });
+
+            // ======================================================
+            // HELPERS
+            // ======================================================
+
+            function formatPrice(amount) {
+                const num = parseFloat(amount) || 0;
+                return num.toLocaleString('cs-CZ') + ' Kč';
+            }
+
+            function formatDate(dateStr) {
+                try {
+                    const d = new Date(dateStr);
+                    return d.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'short', year: 'numeric' });
+                } catch {
+                    return dateStr;
+                }
+            }
+
+            function pluralOrders(count) {
+                if (count === 1) return 'zakázka';
+                if (count >= 2 && count <= 4) return 'zakázky';
+                return 'zakázek';
+            }
+
+            function escapeHtml(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            // ======================================================
+            // INITIAL AUTH GUARD
+            // ======================================================
             (async () => {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (session) {
-                    userEmail.textContent = session.user.email;
+                    userEmailEl.textContent = session.user.email;
                     showView('dashboard');
                 } else {
                     showView('login');
