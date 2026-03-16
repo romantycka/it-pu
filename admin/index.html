@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin | Opravím počítač</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth view transitions */
+        .view-transition {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .view-hidden {
+            opacity: 0;
+            transform: translateY(16px);
+            pointer-events: none;
+            position: absolute;
+            width: 100%;
+        }
+        .view-visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Loading spinner */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .spinner {
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* Subtle floating animation for the logo */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .logo-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Gradient background animation */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animated-gradient {
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #0f172a, #1e3a5f);
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased animated-gradient min-h-screen">
+
+    <!-- ============================================================ -->
+    <!-- VIEW: LOGIN                                                  -->
+    <!-- ============================================================ -->
+    <div id="view-login" class="view-transition view-visible min-h-screen flex items-center justify-center px-4 py-8">
+        <div class="w-full max-w-md">
+            <!-- Logo -->
+            <div class="text-center mb-8">
+                <img src="../assets/logo_it_light.png" alt="Opravím počítač" class="h-20 w-auto mx-auto logo-float">
+            </div>
+
+            <!-- Login Card -->
+            <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-8 sm:p-10">
+                <div class="text-center mb-8">
+                    <h1 class="text-2xl font-bold text-white mb-2">Administrace</h1>
+                    <p class="text-slate-400 text-sm">Přihlaste se do zakázkového systému</p>
+                </div>
+
+                <form id="login-form" class="space-y-5" autocomplete="on">
+                    <!-- Email -->
+                    <div>
+                        <label for="login-email" class="block text-sm font-medium text-slate-300 mb-1.5">E-mail</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <input type="email" id="login-email" name="email" required autocomplete="email"
+                                placeholder="vas@email.cz"
+                                class="w-full pl-11 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 text-base focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition">
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label for="login-password" class="block text-sm font-medium text-slate-300 mb-1.5">Heslo</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                            <input type="password" id="login-password" name="password" required autocomplete="current-password"
+                                placeholder="••••••••"
+                                class="w-full pl-11 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 text-base focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition">
+                        </div>
+                    </div>
+
+                    <!-- Error message -->
+                    <div id="login-error" class="hidden bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-red-300 text-sm flex items-start gap-2">
+                        <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <span id="login-error-text"></span>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" id="login-submit"
+                        class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 active:scale-[0.98] flex items-center justify-center gap-2 text-base min-h-[48px]">
+                        <span id="login-btn-text">Přihlásit se</span>
+                        <svg id="login-btn-spinner" class="w-5 h-5 spinner hidden" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <p class="text-center text-slate-600 text-xs mt-6">&copy; 2024 Petr Urban &middot; Opravím počítač</p>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- VIEW: DASHBOARD (placeholder for Phase 3)                    -->
+    <!-- ============================================================ -->
+    <div id="view-dashboard" class="view-transition view-hidden min-h-screen flex flex-col">
+        <!-- Top Bar -->
+        <header class="bg-white/5 backdrop-blur-xl border-b border-white/10 px-4 sm:px-6 py-4">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <img src="../assets/logo_it_light.png" alt="Opravím počítač" class="h-10 w-auto">
+                    <span class="text-white/60 text-sm font-medium hidden sm:inline">Zakázkový systém</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span id="user-email" class="text-slate-400 text-sm hidden sm:inline"></span>
+                    <button id="btn-logout"
+                        class="px-4 py-2.5 bg-white/5 border border-white/10 text-slate-300 text-sm font-medium rounded-xl hover:bg-white/10 hover:text-white transition-all active:scale-[0.97] flex items-center gap-2 min-h-[44px]">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Odhlásit se
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="flex-1 flex items-center justify-center px-4 py-12">
+            <div class="text-center max-w-lg">
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-600/20">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-3">Přihlášení úspěšné</h2>
+                <p class="text-slate-400 mb-8">Dashboard bude implementován ve Fázi 3.<br>Toto je připravená struktura admin panelu.</p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                        <div class="text-2xl font-bold text-white">—</div>
+                        <div class="text-xs text-slate-500 mt-1">Zakázky</div>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                        <div class="text-2xl font-bold text-white">—</div>
+                        <div class="text-xs text-slate-500 mt-1">Klienti</div>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                        <div class="text-2xl font-bold text-white">—</div>
+                        <div class="text-xs text-slate-500 mt-1">Tento měsíc</div>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                        <div class="text-2xl font-bold text-white">—</div>
+                        <div class="text-xs text-slate-500 mt-1">Tržby</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SUPABASE + APP LOGIC                                         -->
+    <!-- ============================================================ -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            // --- Supabase Init (in-memory session, no localStorage) ---
+            const SUPABASE_URL = 'https://jfbpajgwfdwyyljfcybj.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_Hy6z2LiOHH5P6mQa98S7LA_D-1ENSgo';
+
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+                auth: {
+                    persistSession: false,   // in-memory only — no localStorage
+                    autoRefreshToken: true,
+                    detectSessionInUrl: false
+                }
+            });
+
+            // --- DOM References ---
+            const viewLogin = document.getElementById('view-login');
+            const viewDashboard = document.getElementById('view-dashboard');
+            const loginForm = document.getElementById('login-form');
+            const emailInput = document.getElementById('login-email');
+            const passwordInput = document.getElementById('login-password');
+            const errorBox = document.getElementById('login-error');
+            const errorText = document.getElementById('login-error-text');
+            const submitBtn = document.getElementById('login-submit');
+            const btnText = document.getElementById('login-btn-text');
+            const btnSpinner = document.getElementById('login-btn-spinner');
+            const btnLogout = document.getElementById('btn-logout');
+            const userEmail = document.getElementById('user-email');
+
+            // --- View Switching ---
+            function showView(view) {
+                if (view === 'dashboard') {
+                    viewLogin.classList.remove('view-visible');
+                    viewLogin.classList.add('view-hidden');
+                    viewDashboard.classList.remove('view-hidden');
+                    viewDashboard.classList.add('view-visible');
+                } else {
+                    viewDashboard.classList.remove('view-visible');
+                    viewDashboard.classList.add('view-hidden');
+                    viewLogin.classList.remove('view-hidden');
+                    viewLogin.classList.add('view-visible');
+                    // Reset form state
+                    loginForm.reset();
+                    hideError();
+                    setLoading(false);
+                }
+            }
+
+            // --- Error Display ---
+            function showError(message) {
+                errorText.textContent = message;
+                errorBox.classList.remove('hidden');
+            }
+
+            function hideError() {
+                errorBox.classList.add('hidden');
+                errorText.textContent = '';
+            }
+
+            // --- Loading State ---
+            function setLoading(loading) {
+                if (loading) {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+                    btnText.textContent = 'Přihlašování…';
+                    btnSpinner.classList.remove('hidden');
+                } else {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                    btnText.textContent = 'Přihlásit se';
+                    btnSpinner.classList.add('hidden');
+                }
+            }
+
+            // --- Translate Supabase errors to Czech ---
+            function translateError(message) {
+                const map = {
+                    'Invalid login credentials': 'Nesprávný e-mail nebo heslo.',
+                    'Email not confirmed': 'E-mailová adresa nebyla potvrzena.',
+                    'User not found': 'Uživatel nenalezen.',
+                    'Too many requests': 'Příliš mnoho pokusů. Zkuste to později.',
+                    'Network error': 'Chyba připojení. Zkontrolujte internet.',
+                };
+                for (const [key, value] of Object.entries(map)) {
+                    if (message.includes(key)) return value;
+                }
+                return 'Přihlášení se nezdařilo. Zkuste to znovu.';
+            }
+
+            // --- Login Handler ---
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                hideError();
+                setLoading(true);
+
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
+
+                if (!email || !password) {
+                    showError('Vyplňte e-mail i heslo.');
+                    setLoading(false);
+                    return;
+                }
+
+                try {
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email,
+                        password
+                    });
+
+                    if (error) {
+                        showError(translateError(error.message));
+                        setLoading(false);
+                        return;
+                    }
+
+                    // Success — show dashboard
+                    if (data.user) {
+                        userEmail.textContent = data.user.email;
+                    }
+                    showView('dashboard');
+                } catch (err) {
+                    showError('Chyba připojení. Zkontrolujte internet.');
+                    setLoading(false);
+                }
+            });
+
+            // --- Logout Handler ---
+            btnLogout.addEventListener('click', async () => {
+                await supabase.auth.signOut();
+                showView('login');
+            });
+
+            // --- Auth State Listener (session expired, etc.) ---
+            supabase.auth.onAuthStateChange((event, session) => {
+                if (event === 'SIGNED_OUT' || (!session && event === 'TOKEN_REFRESHED')) {
+                    showView('login');
+                }
+            });
+
+            // --- Initial Auth Guard ---
+            // With persistSession: false, session is always null on page load → show login
+            (async () => {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    userEmail.textContent = session.user.email;
+                    showView('dashboard');
+                } else {
+                    showView('login');
+                }
+            })();
+
+        })();
+    </script>
+
+</body>
+
+</html>
