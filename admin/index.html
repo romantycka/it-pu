@@ -598,6 +598,7 @@
             let selectedClient = null;
             let orderItems = [];
             let allClients = [];
+            let currentEditingOrderId = null;
 
             // ======================================================
             // VIEW SWITCHING
@@ -848,7 +849,7 @@
                 const description = order.description || 'Bez popisu';
 
                 return `
-                    <div class="order-card bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 cursor-pointer">
+                    <div class="order-card bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 cursor-pointer" onclick="window.editOrder('${order.id}')">
                         <div class="flex items-start justify-between gap-3 mb-3">
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2 mb-1 flex-wrap">
@@ -932,6 +933,8 @@
             // ORDER FORM LOGIC
             // ======================================================
 
+            const modalTitle = document.querySelector('#modal-order h2');
+
             async function openOrderForm() {
                 resetOrderForm();
                 modalOrder.classList.remove('modal-hidden');
@@ -941,9 +944,49 @@
                 if (!error) allClients = data;
             }
 
+            // Expose editOrder globally for the onclick handler
+            window.editOrder = async function(id) {
+                const order = allOrders.find(o => o.id === id);
+                if (!order) return;
+
+                currentEditingOrderId = id;
+                await openOrderForm();
+                
+                modalTitle.textContent = `Úprava zakázky: ${order.order_number}`;
+
+                // Set Client
+                if (order.clients) {
+                    selectClient(order.clients);
+                    // Remove auto-added transport row to avoid duplication
+                    const transportRow = currentOrderItems.find(i => i.type === 'doprava');
+                    if (transportRow) removeItem(transportRow.id);
+                }
+
+                orderDescription.value = order.description || '';
+
+                // Load items
+                const { data: items, error } = await supabase
+                    .from('order_items')
+                    .select('*')
+                    .eq('order_id', id)
+                    .order('created_at', { ascending: true }); // Assuming created_at or just order
+
+                if (!error && items) {
+                    items.forEach(item => {
+                        addItem(item.item_type, item.description, item.quantity, item.unit_price);
+                    });
+                }
+                
+                // Set checkboxes if surcharges exist
+                surchargeEvening.checked = currentOrderItems.some(i => i.type === 'příplatek' && i.description.includes('Večerní'));
+                surchargeWeekend.checked = currentOrderItems.some(i => i.type === 'příplatek' && i.description.includes('Neděle'));
+            };
+
             function closeOrderForm() {
                 modalOrder.classList.add('modal-hidden');
                 document.body.style.overflow = '';
+                currentEditingOrderId = null;
+                modalTitle.textContent = 'Nová zakázka';
                 loadDashboard();
             }
 
@@ -951,6 +994,8 @@
                 selectedClient = null;
                 allClients = [];
                 currentOrderItems = [];
+                currentEditingOrderId = null;
+                modalTitle.textContent = 'Nová zakázka';
                 saveError.classList.add('hidden');
                 saveError.textContent = '';
                 
@@ -1169,7 +1214,7 @@
                 if (km > 10) {
                     q = km * 2; // Tam i zpět
                     p = 5;
-                    desc = `Doprava (${km} km)`;
+                    desc = `Doprava (${km} km x 2)`;
                 } else if (km > 0) {
                     desc = `Doprava ZDARMA (${km} km)`;
                 }
@@ -1244,36 +1289,64 @@
                     return;
                 }
 
-                // 2. Generate Order Number
-                const orderNumber = await generateOrderNumber();
-
-                // 3. Save Order (Sequential Async as requested)
+                // 2 & 3. Save Order (Create or Update)
                 const total_price = currentOrderItems.reduce((sum, i) => sum + (i.quantity * i.unitPrice), 0);
+                let orderId;
                 
-                const { data: order, error: orderErr } = await supabase
-                    .from('orders')
-                    .insert({
-                        order_number: orderNumber,
-                        client_id: clientId,
-                        status: status,
-                        description: orderDescription.value.trim(),
-                        total_price: total_price,
-                        date_created: new Date().toISOString(),
-                        date_completed: status === 'dokončena' ? new Date().toISOString() : null
-                    })
-                    .select()
-                    .single();
+                if (currentEditingOrderId) {
+                    // UPDATE existing
+                    const { data: order, error: orderErr } = await supabase
+                        .from('orders')
+                        .update({
+                            client_id: clientId,
+                            status: status,
+                            description: orderDescription.value.trim(),
+                            total_price: total_price,
+                            date_completed: status === 'dokončena' ? new Date().toISOString() : null
+                        })
+                        .eq('id', currentEditingOrderId)
+                        .select()
+                        .single();
 
-                if (orderErr) {
-                    saveError.textContent = 'Chyba při ukládání zakázky: ' + orderErr.message;
-                    saveError.classList.remove('hidden');
-                    return;
+                    if (orderErr) {
+                        saveError.textContent = 'Chyba při aktualizaci zakázky: ' + orderErr.message;
+                        saveError.classList.remove('hidden');
+                        return;
+                    }
+                    orderId = order.id;
+
+                    // DELETE old items
+                    await supabase.from('order_items').delete().eq('order_id', orderId);
+
+                } else {
+                    // INSERT new
+                    const orderNumber = await generateOrderNumber();
+                    const { data: order, error: orderErr } = await supabase
+                        .from('orders')
+                        .insert({
+                            order_number: orderNumber,
+                            client_id: clientId,
+                            status: status,
+                            description: orderDescription.value.trim(),
+                            total_price: total_price,
+                            date_created: new Date().toISOString(),
+                            date_completed: status === 'dokončena' ? new Date().toISOString() : null
+                        })
+                        .select()
+                        .single();
+
+                    if (orderErr) {
+                        saveError.textContent = 'Chyba při ukládání zakázky: ' + orderErr.message;
+                        saveError.classList.remove('hidden');
+                        return;
+                    }
+                    orderId = order.id;
                 }
 
                 // 4. Save Order Items
                 if (currentOrderItems.length > 0) {
                     const itemsToSave = currentOrderItems.map(i => ({
-                        order_id: order.id,
+                        order_id: orderId,
                         item_type: i.type,
                         description: i.description,
                         quantity: i.quantity,
@@ -1287,7 +1360,7 @@
                         .insert(itemsToSave);
 
                     if (itemsErr) {
-                        saveError.textContent = 'Zakázka uložena, ale položky selhaly: ' + itemsErr.message;
+                        saveError.textContent = 'Zakázka uložena/aktualizována, ale položky selhaly: ' + itemsErr.message;
                         saveError.classList.remove('hidden');
                         return;
                     }
