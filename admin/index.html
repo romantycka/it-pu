@@ -1333,6 +1333,45 @@
                                 <p style="font-size:28px;font-weight:700;color:#0f172a;margin:0">${formatPrice(order.total_price)}</p>
                             </div>
                         </div>
+
+                        <!-- PŘÍJMOVÝ POKLADNÍ DOKLAD -->
+                        <div style="margin-top:2.5rem; border-top: 1px dashed #cbd5e1; padding-top: 1.5rem; position: relative; page-break-inside: avoid;">
+                            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: white; padding: 0 10px; color: #94a3b8; font-size: 14px;">&#9986;</div>
+                            
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+                                <h2 style="font-size:16px;font-weight:700;color:#0f172a;margin:0;">Příjmový pokladní doklad</h2>
+                                <span style="font-size:12px;color:#64748b;">K zakázce č.: <strong style="color:#0f172a">${escapeHtml(order.order_number || '—')}</strong></span>
+                            </div>
+                            
+                            <div style="display:flex;gap:1.5rem;margin-bottom:1rem">
+                                <div style="flex:1;background:#f8fafc;border-radius:6px;padding:0.75rem">
+                                    <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;font-weight:600;margin:0 0 4px 0">Dodavatel</p>
+                                    <p style="font-size:12px;font-weight:600;margin:0 0 2px 0">Petr Urban <span style="font-size:10px;font-weight:normal;color:#64748b;">(Neplátce DPH)</span></p>
+                                    <p style="font-size:11px;color:#475569;margin:0">Olomučany 679 03 <span style="color:#94a3b8">| IČO: ............</span></p>
+                                </div>
+                                <div style="flex:1;background:#f8fafc;border-radius:6px;padding:0.75rem">
+                                    <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;font-weight:600;margin:0 0 4px 0">Odběratel</p>
+                                    <p style="font-size:12px;font-weight:600;margin:0 0 2px 0">${escapeHtml(client.name || 'Neznámý klient')}</p>
+                                    <p style="font-size:11px;color:#475569;margin:0">${client.address ? escapeHtml(client.address) : '—'}</p>
+                                </div>
+                            </div>
+                            
+                            <div style="display:flex; align-items:center; border-bottom: 2px solid #e2e8f0; border-top: 2px solid #e2e8f0; padding: 0.5rem 0.5rem; margin-bottom:1rem;">
+                                <div style="font-size:12px; color:#475569; flex:1;">Účel: <strong style="color:#0f172a;">Úhrada servisních služeb</strong></div>
+                                <div style="font-size:12px; color:#475569;">Datum přijetí: <strong style="color:#0f172a;">${dateCompleted || dateCreated}</strong></div>
+                            </div>
+                            
+                            <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                                <div>
+                                    <p style="font-size:11px;color:#64748b;margin:0 0 2px 0">Přijato celkem</p>
+                                    <p style="font-size:22px;font-weight:700;color:#0f172a;margin:0">${formatPrice(order.total_price)}</p>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="width: 180px; border-bottom: 1px solid #0f172a; margin-left: auto; margin-top:20px;"></div>
+                                    <p style="font-size:10px;color:#64748b;margin:4px 0 0">Podpis příjemce / razítko</p>
+                                </div>
+                            </div>
+                        </div>
                     `;
 
                     // 4.5 Set up Email link
