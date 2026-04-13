@@ -611,6 +611,7 @@
     <!-- SUPABASE + APP LOGIC                                         -->
     <!-- ============================================================ -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         (function () {
             'use strict';
@@ -1164,6 +1165,79 @@
                 window.print();
             });
 
+            let currentMailtoLink = '';
+            let currentOrderDataForPdf = null;
+            const btnPrintEmail = document.getElementById('btn-print-email');
+            if (btnPrintEmail) {
+                btnPrintEmail.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    if (!currentOrderDataForPdf) {
+                        alert('Zatím není připraven e-mail k odeslání.');
+                        return;
+                    }
+                    
+                    const originalText = btnPrintEmail.innerHTML;
+                    btnPrintEmail.innerHTML = '<svg class="w-4 h-4 spinner" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Příprava...';
+                    btnPrintEmail.style.pointerEvents = 'none';
+
+                    try {
+                        const printEl = document.getElementById('print-document');
+                        const opt = {
+                            margin:       [10, 10, 10, 10],
+                            filename:     `Zakazkovy-list-${currentOrderDataForPdf.orderNumber || '00'}.pdf`,
+                            image:        { type: 'jpeg', quality: 0.98 },
+                            html2canvas:  { scale: 2, useCORS: true },
+                            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                        };
+
+                        const pdfBlob = await html2pdf().set(opt).from(printEl).output('blob');
+                        const file = new File([pdfBlob], opt.filename, { type: 'application/pdf' });
+
+                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                            try {
+                                await navigator.share({
+                                    files: [file],
+                                    title: currentOrderDataForPdf.subject,
+                                    text: currentOrderDataForPdf.body
+                                });
+                                console.log('Sdílení úspěšné.');
+                            } catch (shareErr) {
+                                console.log('Share zrušeno nebo selhalo:', shareErr);
+                            }
+                        } else {
+                            alert('Váš OS/prohlížeč bohužel nepodporuje přímé předání přílohy do e-mailu přes Web Share.\n\nDokument Vám nyní stahujeme do počítače a následně se otevře e-mail. Soubor následně prosím přiložte manuálně.');
+                            
+                            const aDownload = document.createElement('a');
+                            aDownload.href = URL.createObjectURL(pdfBlob);
+                            aDownload.download = opt.filename;
+                            document.body.appendChild(aDownload);
+                            aDownload.click();
+                            document.body.removeChild(aDownload);
+                            URL.revokeObjectURL(aDownload.href);
+
+                            setTimeout(() => {
+                                const mailHref = `mailto:${currentOrderDataForPdf.emailTo}?subject=${encodeURIComponent(currentOrderDataForPdf.subject)}&body=${encodeURIComponent(currentOrderDataForPdf.body + '\n\n[NEZAPOMEŇTE RUČNĚ PŘILOŽIT STAŽENÉ PDF]')}`;
+                                try {
+                                    const a = document.createElement('a');
+                                    a.href = mailHref;
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    document.body.removeChild(a);
+                                } catch(err) {
+                                    window.location.href = mailHref;
+                                }
+                            }, 1500);
+                        }
+                    } catch(err) {
+                        console.error('PDF nebo share chyba:', err);
+                        alert('Nastala chyba při otevírání e-mailu s PDF.');
+                    } finally {
+                        btnPrintEmail.innerHTML = originalText;
+                        btnPrintEmail.style.pointerEvents = 'auto';
+                    }
+                });
+            }
+
             // Expose actions globally for the onclick handlers
             window.viewOrder = async function(id) {
                 try {
@@ -1262,28 +1336,27 @@
                     `;
 
                     // 4.5 Set up Email link
-                    const btnEmail = document.getElementById('btn-print-email');
-                    if (btnEmail) {
-                        const emailTo = client.email || '';
-                        const subject = encodeURIComponent(`Servisní protokol - Zakázka č. ${order.order_number || ''}`);
-                        
-                        let emailBody = `Dobrý den,\n\nníže Vám zasíláme detailní přehled o servisní zakázce č. ${order.order_number || ''}.\n\n`;
-                        if (order.description) {
-                            emailBody += `Popis problému:\n${order.description}\n\n`;
-                        }
-                        emailBody += `Rozpis položek:\n`;
-                        orderItems.forEach(it => {
-                            const total = (parseFloat(it.quantity) || 0) * (parseFloat(it.unit_price) || 0);
-                            emailBody += `- ${it.item_type || ''}: ${it.description || ''} (${it.quantity} ${it.unit || ''} x ${formatPrice(it.unit_price)}) = ${formatPrice(total)}\n`;
-                        });
-                        emailBody += `\nCelkem k úhradě: ${formatPrice(order.total_price)}\n\n`;
-                        emailBody += `S pozdravem,\nPetr Urban - Opravím počítač\nTelefon: +420 704 176 526\nWeb: https://opravimpocitac.cz`;
-
-                        const mailtoLink = `mailto:${emailTo}?subject=${subject}&body=${encodeURIComponent(emailBody)}`;
-                        btnEmail.onclick = function() {
-                            window.location.href = mailtoLink;
-                        };
+                    const emailTo = client.email || '';
+                    const subject = `Servisní protokol - Zakázka č. ${order.order_number || ''}`;
+                    
+                    let emailBody = `Dobrý den,\n\nníže Vám zasíláme detailní přehled o servisní zakázce č. ${order.order_number || ''}.\n\n`;
+                    if (order.description) {
+                        emailBody += `Popis problému:\n${order.description}\n\n`;
                     }
+                    emailBody += `Rozpis položek:\n`;
+                    orderItems.forEach(it => {
+                        const total = (parseFloat(it.quantity) || 0) * (parseFloat(it.unit_price) || 0);
+                        emailBody += `- ${it.item_type || ''}: ${it.description || ''} (${it.quantity} ${it.unit || ''} x ${formatPrice(it.unit_price)}) = ${formatPrice(total)}\n`;
+                    });
+                    emailBody += `\nCelkem k úhradě: ${formatPrice(order.total_price)}\n\n`;
+                    emailBody += `S pozdravem,\nPetr Urban - Opravím počítač\nTelefon: +420 704 176 526\nWeb: https://opravimpocitac.cz`;
+
+                    currentOrderDataForPdf = {
+                        orderNumber: order.order_number,
+                        emailTo: emailTo,
+                        subject: subject,
+                        body: emailBody
+                    };
 
                     // 5. Show print view, hide dashboard
                     viewDashboard.classList.remove('view-visible');
