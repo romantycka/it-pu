@@ -1276,7 +1276,7 @@
                     printDocument.innerHTML = `
                         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:2px solid #e2e8f0">
                             <div>
-                                <h1 style="font-size:22px;font-weight:700;color:#0f172a;margin:0 0 4px 0">Servisní protokol</h1>
+                                <h1 style="font-size:22px;font-weight:700;color:#0f172a;margin:0 0 4px 0">Servisní zakázkový list</h1>
                                 <p style="font-size:13px;color:#64748b;margin:0">Číslo zakázky: <strong style="color:#0f172a">${escapeHtml(order.order_number || '—')}</strong></p>
                             </div>
                             <div style="text-align:right">
@@ -1376,7 +1376,7 @@
 
                     // 4.5 Set up Email link
                     const emailTo = client.email || '';
-                    const subject = `Servisní protokol - Zakázka č. ${order.order_number || ''}`;
+                    const subject = `Servisní zakázkový list - Zakázka č. ${order.order_number || ''}`;
                     
                     let emailBody = `Dobrý den,\n\nníže Vám zasíláme detailní přehled o servisní zakázce č. ${order.order_number || ''}.\n\n`;
                     if (order.description) {
