@@ -165,6 +165,65 @@
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Print view document styling */
+        .print-document {
+            background: white;
+            color: #1a1a1a;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .print-document table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .print-document th,
+        .print-document td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .print-document th {
+            background: #f8fafc;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #64748b;
+        }
+        .print-document td {
+            font-size: 13px;
+        }
+        .print-document td:last-child,
+        .print-document th:last-child {
+            text-align: right;
+        }
+
+        /* Print media rules */
+        @media print {
+            body {
+                background: white !important;
+                animation: none !important;
+            }
+            #view-login, #view-dashboard, #modal-order, .no-print {
+                display: none !important;
+            }
+            #view-print {
+                display: block !important;
+                position: static !important;
+            }
+            .print-document {
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+            }
+        }
     </style>
 </head>
 
@@ -421,14 +480,19 @@
                             <div id="client-dropdown" class="client-dropdown hidden absolute left-0 right-0 top-full mt-1 bg-slate-800 border border-white/10 rounded-xl shadow-2xl z-10 overflow-hidden"></div>
                         </div>
                         <!-- Selected Client Badge -->
-                        <div id="selected-client" class="hidden mt-3 bg-blue-500/10 border border-blue-500/20 rounded-xl px-4 py-3 flex items-center justify-between">
-                            <div>
+                        <div id="selected-client" class="hidden mt-3 bg-blue-500/10 border border-blue-500/20 rounded-xl px-4 py-3 space-y-2">
+                            <div class="flex items-center justify-between">
                                 <span id="selected-client-name" class="text-white text-sm font-medium"></span>
-                                <span id="selected-client-distance" class="text-slate-400 text-xs ml-2"></span>
+                                <button id="btn-clear-client" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                </button>
                             </div>
-                            <button id="btn-clear-client" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <label class="text-slate-400 text-xs whitespace-nowrap">Vzdálenost (jednosměrně):</label>
+                                <input type="number" id="selected-client-distance-input" step="0.5" min="0" placeholder="km" class="w-20 px-2 py-1 bg-white/10 border border-white/15 rounded-lg text-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500/50 text-center">
+                                <span class="text-slate-500 text-xs">km</span>
+                                <span class="text-blue-400 text-xs ml-1">→ doprava: <strong id="transport-preview">0</strong> km</span>
+                            </div>
                         </div>
                         <!-- New Client Toggle -->
                         <button id="btn-toggle-new-client" class="mt-3 text-blue-400 text-sm font-medium hover:text-blue-300 transition flex items-center gap-1">
@@ -516,9 +580,38 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- VIEW: PRINT PREVIEW                                          -->
+    <!-- ============================================================ -->
+    <div id="view-print" class="hidden min-h-screen px-4 py-8">
+        <!-- Top action bar (hidden during print) -->
+        <div class="no-print max-w-[800px] mx-auto flex items-center justify-between mb-6">
+            <button id="btn-print-back" class="px-4 py-2.5 bg-white/5 border border-white/10 text-slate-300 text-sm font-medium rounded-xl hover:bg-white/10 hover:text-white transition-all active:scale-[0.97] flex items-center gap-2 min-h-[44px]">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                Zpět
+            </button>
+            <div class="flex gap-3">
+                <button type="button" id="btn-print-email" class="px-5 py-2.5 bg-white/5 border border-white/10 text-white text-sm font-semibold rounded-xl hover:bg-white/10 transition-all shadow-lg active:scale-[0.97] flex items-center gap-2 min-h-[44px]">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    Odeslat e-mailem
+                </button>
+                <button id="btn-print-print" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold rounded-xl hover:from-blue-500 hover:to-indigo-500 transition-all shadow-lg shadow-blue-600/20 active:scale-[0.97] flex items-center gap-2 min-h-[44px]">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+                    Vytisknout
+                </button>
+            </div>
+        </div>
+
+        <!-- A4-style document -->
+        <div id="print-document" class="print-document">
+            <!-- Populated dynamically by viewOrder() -->
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
     <!-- SUPABASE + APP LOGIC                                         -->
     <!-- ============================================================ -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         (function () {
             'use strict';
@@ -570,7 +663,7 @@
             const clientDropdown = document.getElementById('client-dropdown');
             const selectedClientBox = document.getElementById('selected-client');
             const selectedClientName = document.getElementById('selected-client-name');
-            const selectedClientDistance = document.getElementById('selected-client-distance');
+            // selectedClientDistance removed - replaced by selectedClientDistanceInput
             const btnClearClient = document.getElementById('btn-clear-client');
             const btnToggleNewClient = document.getElementById('btn-toggle-new-client');
             const newClientForm = document.getElementById('new-client-form');
@@ -818,6 +911,18 @@
                     : 'žádné zakázky';
             }
 
+            // Track expanded months in localStorage
+            let expandedMonths = JSON.parse(localStorage.getItem('opravim_pocitac_expanded_months') || '{}');
+
+            function toggleMonth(monthKey) {
+                expandedMonths[monthKey] = !expandedMonths[monthKey];
+                localStorage.setItem('opravim_pocitac_expanded_months', JSON.stringify(expandedMonths));
+                renderOrders();
+            }
+
+            // Make it global so inline onclick can use it
+            window.toggleMonth = toggleMonth;
+
             function renderOrders() {
                 const filtered = getFilteredOrders();
 
@@ -838,8 +943,91 @@
                     return;
                 }
 
-                ordersList.innerHTML = filtered.map(order => renderOrderCard(order)).join('');
+                if (currentFilter === 'active') {
+                    // Render simple list for active orders
+                    ordersList.innerHTML = filtered.map(order => renderOrderCard(order)).join('');
+                } else {
+                    // Render grouped by month for done orders
+                    const groups = {};
+                    
+                    filtered.forEach(order => {
+                        const date = order.date_completed ? new Date(order.date_completed) : (order.date_created ? new Date(order.date_created) : new Date());
+                        const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                        const monthName = date.toLocaleDateString('cs-CZ', { month: 'long', year: 'numeric' });
+                        
+                        if (!groups[monthKey]) {
+                            groups[monthKey] = { name: monthName, orders: [], total: 0 };
+                        }
+                        groups[monthKey].orders.push(order);
+                        groups[monthKey].total += (order.total_price || 0);
+                    });
+
+                    // Sort keys descending
+                    const sortedKeys = Object.keys(groups).sort().reverse();
+                    
+                    // The newest month is automatically expanded if not explicitly collapsed
+                    if (sortedKeys.length > 0) {
+                        const newestMonth = sortedKeys[0];
+                        if (expandedMonths[newestMonth] === undefined) {
+                            expandedMonths[newestMonth] = true;
+                        }
+                    }
+
+                    let html = '';
+                    sortedKeys.forEach(key => {
+                        const group = groups[key];
+                        // All other months are collapsed by default if not explicitly expanded
+                        const isExpanded = expandedMonths[key] === true;
+                        
+                        // Icon rotation
+                        const iconClass = isExpanded ? 'rotate-180' : '';
+                        const contentClass = isExpanded ? '' : 'hidden';
+
+                        html += `
+                            <div class="mb-4 bg-slate-800/40 rounded-2xl border border-white/5 overflow-hidden">
+                                <button onclick="window.toggleMonth('${key}')" class="w-full px-5 py-4 flex items-center justify-between hover:bg-white/5 transition-colors group">
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-2 bg-blue-500/10 text-blue-400 rounded-lg group-hover:bg-blue-500/20 transition-colors">
+                                            <svg class="w-5 h-5 transition-transform duration-200 ${iconClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </div>
+                                        <div class="text-left">
+                                            <h3 class="text-white font-semibold capitalize">${group.name}</h3>
+                                            <p class="text-slate-400 text-xs">${group.orders.length} ${pluralOrders(group.orders.length)}</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-blue-400 font-bold">${formatPrice(group.total)}</span>
+                                    </div>
+                                </button>
+                                
+                                <div class="${contentClass} p-4 sm:p-5 pt-0 border-t border-white/5">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
+                                        ${group.orders.map(o => renderOrderCard(o)).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    // Wrap the grouped output in a standard div structure so it replaces ordersList properly, 
+                    // Wait, ordersList itself is a grid-cols-1 sm:grid-cols-2... Wait! 
+                    // If we put the groups directly inside ordersList, it will mess up the grid!
+                    // I will change ordersList class dynamically.
+                    ordersList.className = 'flex flex-col gap-4'; 
+                    ordersList.innerHTML = html;
+                }
             }
+
+            // This handles Grid layout dynamically for active vs done
+            const originalRenderOrders = renderOrders;
+            renderOrders = function() {
+                if (currentFilter === 'active') {
+                    ordersList.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6';
+                }
+                originalRenderOrders();
+            };
 
             function renderOrderCard(order) {
                 const clientName = order.clients?.name || 'Neznámý klient';
@@ -849,7 +1037,7 @@
                 const description = order.description || 'Bez popisu';
 
                 return `
-                    <div class="order-card bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 cursor-pointer" onclick="window.editOrder('${order.id}')">
+                    <div class="order-card bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 flex flex-col h-full">
                         <div class="flex items-start justify-between gap-3 mb-3">
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2 mb-1 flex-wrap">
@@ -860,13 +1048,27 @@
                             </div>
                             ${price ? `<span class="text-white font-bold text-sm whitespace-nowrap">${price}</span>` : ''}
                         </div>
-                        <p class="text-slate-500 text-xs line-clamp-2 mb-3">${escapeHtml(description)}</p>
-                        <div class="flex items-center gap-1.5 text-slate-600 text-xs">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            ${date}
+                        <p class="text-slate-500 text-xs line-clamp-2 mb-3 flex-1">${escapeHtml(description)}</p>
+                        
+                        <div class="flex items-center justify-between mt-auto pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-slate-400 text-xs">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                Vytvořeno: <span class="text-slate-300">${date}</span>
+                            </div>
+                            <!-- Action Buttons -->
+                            <div class="flex items-center gap-1">
+                                <button onclick="window.viewOrder('${order.id}')" title="Náhled" class="p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                </button>
+                                <button onclick="window.editOrder('${order.id}')" title="Editovat" class="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                                </button>
+                                <button onclick="window.deleteOrder('${order.id}')" title="Smazat" class="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -902,7 +1104,10 @@
                     filtered = filtered.filter(o => {
                         const clientName = (o.clients?.name || '').toLowerCase();
                         const orderNumber = (o.order_number || '').toLowerCase();
-                        return clientName.includes(q) || orderNumber.includes(q);
+                        const dateFormatted = o.date_created ? formatDate(o.date_created).toLowerCase() : '';
+                        const monthName = o.date_created ? new Date(o.date_created).toLocaleDateString('cs-CZ', { month: 'long' }).toLowerCase() : '';
+                        
+                        return clientName.includes(q) || orderNumber.includes(q) || dateFormatted.includes(q) || monthName.includes(q);
                     });
                 }
 
@@ -944,22 +1149,302 @@
                 if (!error) allClients = data;
             }
 
-            // Expose editOrder globally for the onclick handler
+            // --- Print view references ---
+            const viewPrint = document.getElementById('view-print');
+            const printDocument = document.getElementById('print-document');
+            const btnPrintBack = document.getElementById('btn-print-back');
+            const btnPrintPrint = document.getElementById('btn-print-print');
+
+            btnPrintBack.addEventListener('click', () => {
+                viewPrint.classList.add('hidden');
+                viewDashboard.classList.remove('view-hidden');
+                viewDashboard.classList.add('view-visible');
+            });
+
+            btnPrintPrint.addEventListener('click', () => {
+                window.print();
+            });
+
+            let currentMailtoLink = '';
+            let currentOrderDataForPdf = null;
+            const btnPrintEmail = document.getElementById('btn-print-email');
+            if (btnPrintEmail) {
+                btnPrintEmail.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    if (!currentOrderDataForPdf) {
+                        alert('Zatím není připraven e-mail k odeslání.');
+                        return;
+                    }
+                    
+                    const originalText = btnPrintEmail.innerHTML;
+                    btnPrintEmail.innerHTML = '<svg class="w-4 h-4 spinner" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Příprava...';
+                    btnPrintEmail.style.pointerEvents = 'none';
+
+                    try {
+                        const printEl = document.getElementById('print-document');
+                        const opt = {
+                            margin:       [10, 10, 10, 10],
+                            filename:     `Zakazkovy-list-${currentOrderDataForPdf.orderNumber || '00'}.pdf`,
+                            image:        { type: 'jpeg', quality: 0.98 },
+                            html2canvas:  { scale: 2, useCORS: true },
+                            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                        };
+
+                        const pdfBlob = await html2pdf().set(opt).from(printEl).output('blob');
+                        const file = new File([pdfBlob], opt.filename, { type: 'application/pdf' });
+
+                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                            try {
+                                await navigator.share({
+                                    files: [file],
+                                    title: currentOrderDataForPdf.subject,
+                                    text: currentOrderDataForPdf.body
+                                });
+                                console.log('Sdílení úspěšné.');
+                            } catch (shareErr) {
+                                console.log('Share zrušeno nebo selhalo:', shareErr);
+                            }
+                        } else {
+                            alert('Váš OS/prohlížeč bohužel nepodporuje přímé předání přílohy do e-mailu přes Web Share.\n\nDokument Vám nyní stahujeme do počítače a následně se otevře e-mail. Soubor následně prosím přiložte manuálně.');
+                            
+                            const aDownload = document.createElement('a');
+                            aDownload.href = URL.createObjectURL(pdfBlob);
+                            aDownload.download = opt.filename;
+                            document.body.appendChild(aDownload);
+                            aDownload.click();
+                            document.body.removeChild(aDownload);
+                            URL.revokeObjectURL(aDownload.href);
+
+                            setTimeout(() => {
+                                const mailHref = `mailto:${currentOrderDataForPdf.emailTo}?subject=${encodeURIComponent(currentOrderDataForPdf.subject)}&body=${encodeURIComponent(currentOrderDataForPdf.body + '\n\n[NEZAPOMEŇTE RUČNĚ PŘILOŽIT STAŽENÉ PDF]')}`;
+                                try {
+                                    const a = document.createElement('a');
+                                    a.href = mailHref;
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    document.body.removeChild(a);
+                                } catch(err) {
+                                    window.location.href = mailHref;
+                                }
+                            }, 1500);
+                        }
+                    } catch(err) {
+                        console.error('PDF nebo share chyba:', err);
+                        alert('Nastala chyba při otevírání e-mailu s PDF.');
+                    } finally {
+                        btnPrintEmail.innerHTML = originalText;
+                        btnPrintEmail.style.pointerEvents = 'auto';
+                    }
+                });
+            }
+
+            // Expose actions globally for the onclick handlers
+            window.viewOrder = async function(id) {
+                try {
+                    // 1. Fetch order with client join
+                    const { data: order, error: orderErr } = await supabase
+                        .from('orders')
+                        .select('*, clients(*)')
+                        .eq('id', id)
+                        .single();
+                    if (orderErr || !order) { alert('Nepodařilo se načíst zakázku.'); return; }
+
+                    // 2. Fetch order items
+                    const { data: items, error: itemsErr } = await supabase
+                        .from('order_items')
+                        .select('*')
+                        .eq('order_id', id);
+                    const orderItems = (!itemsErr && items) ? items : [];
+
+                    // 3. Prepare data
+                    const client = order.clients || {};
+                    const dateCreated = order.date_created ? new Date(order.date_created).toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' }) : '—';
+                    const dateCompleted = order.date_completed ? new Date(order.date_completed).toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' }) : null;
+
+                    const itemsHTML = orderItems.map(it => {
+                        const total = (parseFloat(it.quantity) || 0) * (parseFloat(it.unit_price) || 0);
+                        return `<tr>
+                            <td>${escapeHtml(it.item_type || '—')}</td>
+                            <td>${escapeHtml(it.description || '')}</td>
+                            <td style="text-align:center">${it.quantity} ${escapeHtml(it.unit || '')}</td>
+                            <td style="text-align:right">${formatPrice(it.unit_price)}</td>
+                            <td style="text-align:right;font-weight:600">${formatPrice(total)}</td>
+                        </tr>`;
+                    }).join('');
+
+                    // 4. Render document
+                    printDocument.innerHTML = `
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:2px solid #e2e8f0">
+                            <div>
+                                <h1 style="font-size:22px;font-weight:700;color:#0f172a;margin:0 0 4px 0">Servisní zakázkový list</h1>
+                                <p style="font-size:13px;color:#64748b;margin:0">Číslo zakázky: <strong style="color:#0f172a">${escapeHtml(order.order_number || '—')}</strong></p>
+                            </div>
+                            <div style="text-align:right">
+                                <p style="font-size:12px;color:#64748b;margin:0">Vytvořeno: <strong>${dateCreated}</strong></p>
+                                ${dateCompleted ? `<p style="font-size:12px;color:#64748b;margin:4px 0 0">Dokončeno: <strong>${dateCompleted}</strong></p>` : ''}
+                            </div>
+                        </div>
+
+                        <div style="display:flex;gap:2rem;margin-bottom:2rem">
+                            <div style="flex:1;background:#f8fafc;border-radius:8px;padding:1rem">
+                                <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;font-weight:600;margin:0 0 8px 0">Dodavatel</p>
+                                <p style="font-weight:600;margin:0 0 2px 0">Petr Urban</p>
+                                <p style="font-size:13px;color:#475569;margin:0">Olomučany 679 03<br>Česká republika<br>IČ: 88650324</p>
+                            </div>
+                            <div style="flex:1;background:#f8fafc;border-radius:8px;padding:1rem">
+                                <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;font-weight:600;margin:0 0 8px 0">Odběratel</p>
+                                <p style="font-weight:600;margin:0 0 2px 0">${escapeHtml(client.name || 'Neznámý klient')}</p>
+                                <p style="font-size:13px;color:#475569;margin:0">
+                                    ${client.address ? escapeHtml(client.address) + '<br>' : ''}
+                                    ${client.email ? escapeHtml(client.email) + '<br>' : ''}
+                                    ${client.phone ? escapeHtml(client.phone) : ''}
+                                </p>
+                            </div>
+                        </div>
+
+                        ${order.description ? `
+                        <div style="margin-bottom:2rem">
+                            <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;font-weight:600;margin:0 0 8px 0">Popis problému</p>
+                            <p style="background:#f8fafc;border-radius:8px;padding:1rem;font-size:13px;color:#334155;margin:0;white-space:pre-wrap">${escapeHtml(order.description)}</p>
+                        </div>
+                        ` : ''}
+
+                        <div style="margin-bottom:2rem">
+                            <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;font-weight:600;margin:0 0 8px 0">Položky</p>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Typ</th>
+                                        <th>Popis</th>
+                                        <th style="text-align:center">Množství</th>
+                                        <th style="text-align:right">Jedn. cena</th>
+                                        <th style="text-align:right">Celkem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${itemsHTML || '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:1.5rem">Žádné položky</td></tr>'}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="display:flex;justify-content:flex-end;padding-top:1rem;border-top:2px solid #0f172a">
+                            <div style="text-align:right">
+                                <p style="font-size:12px;color:#64748b;margin:0 0 4px 0">Celkem k úhradě</p>
+                                <p style="font-size:28px;font-weight:700;color:#0f172a;margin:0">${formatPrice(order.total_price)}</p>
+                            </div>
+                        </div>
+
+                        <!-- PŘÍJMOVÝ POKLADNÍ DOKLAD -->
+                        <div style="margin-top:2.5rem; border-top: 1px dashed #cbd5e1; padding-top: 1.5rem; position: relative; page-break-inside: avoid;">
+                            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: white; padding: 0 10px; color: #94a3b8; font-size: 14px;">&#9986;</div>
+                            
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+                                <h2 style="font-size:16px;font-weight:700;color:#0f172a;margin:0;">Příjmový pokladní doklad</h2>
+                                <span style="font-size:12px;color:#64748b;">K zakázce č.: <strong style="color:#0f172a">${escapeHtml(order.order_number || '—')}</strong></span>
+                            </div>
+                            
+                            <div style="display:flex;gap:1.5rem;margin-bottom:1rem">
+                                <div style="flex:1;background:#f8fafc;border-radius:6px;padding:0.75rem">
+                                    <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;font-weight:600;margin:0 0 4px 0">Dodavatel</p>
+                                    <p style="font-size:12px;font-weight:600;margin:0 0 2px 0">Petr Urban <span style="font-size:10px;font-weight:normal;color:#64748b;">(Neplátce DPH)</span></p>
+                                    <p style="font-size:11px;color:#475569;margin:0">Olomučany 679 03 <span style="color:#94a3b8">| IČO: 88650324</span></p>
+                                </div>
+                                <div style="flex:1;background:#f8fafc;border-radius:6px;padding:0.75rem">
+                                    <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:#94a3b8;font-weight:600;margin:0 0 4px 0">Odběratel</p>
+                                    <p style="font-size:12px;font-weight:600;margin:0 0 2px 0">${escapeHtml(client.name || 'Neznámý klient')}</p>
+                                    <p style="font-size:11px;color:#475569;margin:0">${client.address ? escapeHtml(client.address) : '—'}</p>
+                                </div>
+                            </div>
+                            
+                            <div style="display:flex; align-items:center; border-bottom: 2px solid #e2e8f0; border-top: 2px solid #e2e8f0; padding: 0.5rem 0.5rem; margin-bottom:1rem;">
+                                <div style="font-size:12px; color:#475569; flex:1;">Účel: <strong style="color:#0f172a;">Úhrada servisních služeb</strong></div>
+                                <div style="font-size:12px; color:#475569;">Datum přijetí: <strong style="color:#0f172a;">${dateCompleted || dateCreated}</strong></div>
+                            </div>
+                            
+                            <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                                <div>
+                                    <p style="font-size:11px;color:#64748b;margin:0 0 2px 0">Přijato celkem</p>
+                                    <p style="font-size:22px;font-weight:700;color:#0f172a;margin:0">${formatPrice(order.total_price)}</p>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="width: 180px; border-bottom: 1px solid #0f172a; margin-left: auto; margin-top:20px;"></div>
+                                    <p style="font-size:10px;color:#64748b;margin:4px 0 0">Podpis příjemce / razítko</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    // 4.5 Set up Email link
+                    const emailTo = client.email || '';
+                    const subject = `Servisní zakázkový list - Zakázka č. ${order.order_number || ''}`;
+                    
+                    let emailBody = `Dobrý den,\n\nníže Vám zasíláme detailní přehled o servisní zakázce č. ${order.order_number || ''}.\n\n`;
+                    if (order.description) {
+                        emailBody += `Popis problému:\n${order.description}\n\n`;
+                    }
+                    emailBody += `Rozpis položek:\n`;
+                    orderItems.forEach(it => {
+                        const total = (parseFloat(it.quantity) || 0) * (parseFloat(it.unit_price) || 0);
+                        emailBody += `- ${it.item_type || ''}: ${it.description || ''} (${it.quantity} ${it.unit || ''} x ${formatPrice(it.unit_price)}) = ${formatPrice(total)}\n`;
+                    });
+                    emailBody += `\nCelkem k úhradě: ${formatPrice(order.total_price)}\n\n`;
+                    emailBody += `S pozdravem,\nPetr Urban - Opravím počítač\nTelefon: +420 704 176 526\nWeb: https://opravimpocitac.cz`;
+
+                    currentOrderDataForPdf = {
+                        orderNumber: order.order_number,
+                        emailTo: emailTo,
+                        subject: subject,
+                        body: emailBody
+                    };
+
+                    // 5. Show print view, hide dashboard
+                    viewDashboard.classList.remove('view-visible');
+                    viewDashboard.classList.add('view-hidden');
+                    viewPrint.classList.remove('hidden');
+                    window.scrollTo(0, 0);
+
+                } catch (e) {
+                    console.error('viewOrder error:', e);
+                    alert('Chyba při načítání náhledu.');
+                }
+            };
+
+            window.deleteOrder = async function(id) {
+                if (window.confirm('Opravdu chcete tuto zakázku trvale smazat?')) {
+                    const { error } = await supabase.from('orders').delete().eq('id', id);
+                    if (error) {
+                        alert('Chyba při mazání zakázky: ' + error.message);
+                    } else {
+                        loadDashboard(); // Refresh list immediately
+                    }
+                }
+            };
+
             window.editOrder = async function(id) {
                 const order = allOrders.find(o => o.id === id);
                 if (!order) return;
 
-                currentEditingOrderId = id;
                 await openOrderForm();
+                currentEditingOrderId = id;
                 
                 modalTitle.textContent = `Úprava zakázky: ${order.order_number}`;
 
-                // Set Client
-                if (order.clients) {
-                    selectClient(order.clients);
-                    // Remove auto-added transport row to avoid duplication
-                    const transportRow = currentOrderItems.find(i => i.type === 'doprava');
-                    if (transportRow) removeItem(transportRow.id);
+                // Set Client – need the full client record (with id, distance_km)
+                if (order.client_id) {
+                    const { data: clientData } = await supabase
+                        .from('clients')
+                        .select('*')
+                        .eq('id', order.client_id)
+                        .single();
+                    if (clientData) {
+                        selectClient(clientData);
+                        // Zrušíme automaticky vloženou dopravu, protože editOrderBy načte skutečné položky z databáze
+                        currentOrderItems = currentOrderItems.filter(i => i.type !== 'doprava');
+                        itemsList.querySelectorAll('.item-row').forEach(row => {
+                            const ts = row.querySelector('.item-type');
+                            if (ts && ts.value === 'doprava') row.remove();
+                        });
+                    }
                 }
 
                 orderDescription.value = order.description || '';
@@ -968,18 +1453,19 @@
                 const { data: items, error } = await supabase
                     .from('order_items')
                     .select('*')
-                    .eq('order_id', id)
-                    .order('created_at', { ascending: true }); // Assuming created_at or just order
+                    .eq('order_id', id);
 
                 if (!error && items) {
                     items.forEach(item => {
-                        addItem(item.item_type, item.description, item.quantity, item.unit_price);
+                        addItem(item.item_type, item.description, item.quantity, item.unit_price, item.unit);
                     });
                 }
                 
                 // Set checkboxes if surcharges exist
                 surchargeEvening.checked = currentOrderItems.some(i => i.type === 'příplatek' && i.description.includes('Večerní'));
                 surchargeWeekend.checked = currentOrderItems.some(i => i.type === 'příplatek' && i.description.includes('Neděle'));
+
+                recalculateTotal();
             };
 
             function closeOrderForm() {
@@ -1017,6 +1503,12 @@
                 ncPhone.value = '';
                 ncEmail.value = '';
                 ncDistance.value = '';
+
+                // Reset inline distance input for existing clients
+                const distInput = document.getElementById('selected-client-distance-input');
+                const tPreview = document.getElementById('transport-preview');
+                if (distInput) distInput.value = '';
+                if (tPreview) tPreview.textContent = '0';
             }
 
             // Client Search logic
@@ -1061,6 +1553,30 @@
                 }
             });
 
+            // DOM reference for the new inline distance input
+            const selectedClientDistanceInput = document.getElementById('selected-client-distance-input');
+            const transportPreview = document.getElementById('transport-preview');
+
+            function updateTransportFromDistance(oneWayKm) {
+                const distance = parseFloat(oneWayKm) || 0;
+                const transportQuantity = distance * 2;
+
+                // Update the preview label
+                transportPreview.textContent = transportQuantity;
+
+                // Remove existing transport rows
+                currentOrderItems = currentOrderItems.filter(i => i.type !== 'doprava');
+                itemsList.querySelectorAll('.item-row').forEach(row => {
+                    const ts = row.querySelector('.item-type');
+                    if (ts && ts.value === 'doprava') row.remove();
+                });
+
+                // Add fresh transport row with doubled distance
+                if (transportQuantity > 0) {
+                    addItem('doprava', 'Doprava k zákazníkovi', transportQuantity, 5, 'km');
+                }
+            }
+
             function selectClient(client) {
                 selectedClient = client;
                 clientDropdown.classList.add('hidden');
@@ -1070,12 +1586,22 @@
                 newClientForm.classList.add('hidden');
 
                 selectedClientName.textContent = client.name;
-                selectedClientDistance.textContent = `(${client.distance_km || 0} km)`;
+                selectedClientDistanceInput.value = client.distance_km || '';
                 selectedClientBox.classList.remove('hidden');
 
-                // Auto-add transport row
-                addTransportRow(client.distance_km);
+                // Auto-add transport
+                updateTransportFromDistance(client.distance_km || 0);
             }
+
+            // Listen to the inline distance input for existing clients
+            selectedClientDistanceInput.addEventListener('input', () => {
+                updateTransportFromDistance(selectedClientDistanceInput.value);
+            });
+
+            // Smart helper pro Nového klienta (automatické přidání dopravy)
+            ncDistance.addEventListener('input', () => {
+                updateTransportFromDistance(ncDistance.value);
+            });
 
             btnClearClient.addEventListener('click', () => {
                 selectedClient = null;
@@ -1102,14 +1628,23 @@
             // Items management
             let currentOrderItems = [];
 
-            function addItem(type = 'práce', description = '', quantity = 1, unitPrice = 345) {
+            function addItem(type = 'práce', description = '', quantity = 1, unitPrice = 0, unit = '') {
                 const id = Math.random().toString(36).substr(2, 9);
                 
-                // Defaults by type
-                if (type === 'doprava' && !description) description = 'Doprava';
-                if (type === 'práce' && !description) description = 'Servisní práce';
+                // Set default prices based on type if not provided
+                if (unitPrice === 0) {
+                    if (type === 'práce') unitPrice = 600;
+                    if (type === 'doprava') unitPrice = 5;
+                }
 
-                const item = { id, type, description, quantity, unitPrice };
+                // Set default unit based on type if not provided
+                if (!unit) {
+                    if (type === 'práce') unit = 'hod';
+                    if (type === 'doprava') unit = 'km';
+                    if (type === 'materiál' || type === 'příplatek') unit = 'ks';
+                }
+
+                const item = { id, type, description, quantity, unitPrice, unit };
                 currentOrderItems.push(item);
                 renderItemRow(item);
                 recalculateTotal();
@@ -1133,19 +1668,27 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                         </button>
                     </div>
-                    <div class="flex items-center justify-between gap-4">
-                        <div class="flex items-center gap-2">
+                    <div class="flex items-center justify-between gap-4 mt-1">
+                        <div class="flex items-center gap-2 flex-wrap">
                             <input type="number" step="0.5" class="item-qty w-16 bg-white/5 border border-white/10 rounded-lg text-white text-sm px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500/50" value="${item.quantity}">
-                            <span class="text-slate-500 text-xs">×</span>
+                            
+                            <select class="item-unit bg-slate-800 border border-white/10 rounded-lg text-white text-xs px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
+                                <option value="hod" ${item.unit === 'hod' ? 'selected' : ''}>hod</option>
+                                <option value="km" ${item.unit === 'km' ? 'selected' : ''}>km</option>
+                                <option value="ks" ${item.unit === 'ks' ? 'selected' : ''}>ks</option>
+                            </select>
+
+                            <span class="text-slate-500 text-xs px-1">×</span>
                             <input type="number" class="item-price w-20 bg-white/5 border border-white/10 rounded-lg text-white text-sm px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500/50" value="${item.unitPrice}">
                             <span class="text-slate-500 text-xs text-nowrap">Kč</span>
                         </div>
-                        <div class="item-total text-white text-sm font-bold">${formatPrice(item.quantity * item.unitPrice)}</div>
+                        <div class="item-total text-white text-sm font-bold whitespace-nowrap">${formatPrice(item.quantity * item.unitPrice)}</div>
                     </div>
                 `;
 
                 // Event Listeners
                 const typeSelect = div.querySelector('.item-type');
+                const unitSelect = div.querySelector('.item-unit');
                 const qtyInput = div.querySelector('.item-qty');
                 const priceInput = div.querySelector('.item-price');
                 const descInput = div.querySelector('.item-desc');
@@ -1153,16 +1696,34 @@
 
                 typeSelect.addEventListener('change', () => {
                     item.type = typeSelect.value;
-                    if (item.type === 'práce') item.unitPrice = 345;
-                    else if (item.type === 'doprava') item.unitPrice = 5;
+                    
+                    if (item.type === 'práce') {
+                        item.unitPrice = 600;
+                        item.unit = 'hod';
+                    } else if (item.type === 'doprava') {
+                        item.unitPrice = 5;
+                        item.unit = 'km';
+                    } else if (item.type === 'materiál') {
+                        item.unit = 'ks';
+                    } else if (item.type === 'příplatek') {
+                        item.unit = 'ks';
+                    }
+
                     priceInput.value = item.unitPrice;
+                    unitSelect.value = item.unit;
                     recalculateItem(item, div);
+                });
+
+                unitSelect.addEventListener('change', () => {
+                    item.unit = unitSelect.value;
                 });
 
                 qtyInput.addEventListener('input', () => {
                     item.quantity = parseFloat(qtyInput.value) || 0;
                     recalculateItem(item, div);
                 });
+
+
 
                 priceInput.addEventListener('input', () => {
                     item.unitPrice = parseFloat(priceInput.value) || 0;
@@ -1206,20 +1767,12 @@
                     if (typeSelect.value === 'doprava') row.remove();
                 });
 
-                const km = parseFloat(distance) || 0;
-                let q = 1;
-                let p = 0;
-                let desc = 'Doprava (Blansko a okolí)';
+                const distance_km = parseFloat(distance) || 0;
+                const q = distance_km * 2;
+                const p = 5;
+                const desc = 'Doprava k zákazníkovi';
 
-                if (km > 10) {
-                    q = km * 2; // Tam i zpět
-                    p = 5;
-                    desc = `Doprava (${km} km x 2)`;
-                } else if (km > 0) {
-                    desc = `Doprava ZDARMA (${km} km)`;
-                }
-
-                addItem('doprava', desc, q, p);
+                addItem('doprava', desc, q, p, 'km');
             }
 
             // Surcharge logic
@@ -1227,10 +1780,10 @@
                 const type = 'příplatek';
                 const desc = 'Večerní servis / Sobota';
                 if (surchargeEvening.checked) {
-                    addItem(type, desc, 1, 500);
+                    addItem(type, desc, 1, 500, 'ks');
                 } else {
-                    const item = currentOrderItems.find(i => i.type === type && i.description === desc);
-                    if (item) removeItem(item.id);
+                    const existing = currentOrderItems.find(i => i.type === type && i.description === desc);
+                    if (existing) removeItem(existing.id);
                 }
             });
 
@@ -1238,10 +1791,10 @@
                 const type = 'příplatek';
                 const desc = 'Neděle / Svátek';
                 if (surchargeWeekend.checked) {
-                    addItem(type, desc, 1, 1000);
+                    addItem(type, desc, 1, 1000, 'ks');
                 } else {
-                    const item = currentOrderItems.find(i => i.type === type && i.description === desc);
-                    if (item) removeItem(item.id);
+                    const existing = currentOrderItems.find(i => i.type === type && i.description === desc);
+                    if (existing) removeItem(existing.id);
                 }
             });
 
@@ -1353,6 +1906,7 @@
                         unit_price: i.unitPrice,
                         total: i.quantity * i.unitPrice,
                         date: new Date().toISOString(),
+                        unit: i.unit || ''
                     }));
 
                     const { error: itemsErr } = await supabase
@@ -1376,14 +1930,21 @@
                 const DD = String(now.getDate()).padStart(2, '0');
                 const prefix = `${YY}${MM}${DD}/`;
 
-                // Count orders for today
-                const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
-                const { count, error } = await supabase
+                // Find the highest existing order number for today
+                const { data, error } = await supabase
                     .from('orders')
-                    .select('*', { count: 'exact', head: true })
-                    .gte('date_created', startOfDay);
+                    .select('order_number')
+                    .like('order_number', `${prefix}%`)
+                    .order('order_number', { ascending: false })
+                    .limit(1);
 
-                const nextNum = (count || 0) + 1;
+                let nextNum = 1;
+                if (!error && data && data.length > 0) {
+                    const lastNumber = data[0].order_number;
+                    const seq = parseInt(lastNumber.split('/')[1], 10);
+                    if (!isNaN(seq)) nextNum = seq + 1;
+                }
+
                 return prefix + String(nextNum).padStart(2, '0');
             }
 
