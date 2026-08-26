@@ -113,13 +113,19 @@
 </head>
 
 <body class="font-sans text-slate-800 antialiased bg-white">
+    <script>
+        // Čistá adresa: /index.html -> /
+        if (location.pathname.endsWith('/index.html')) {
+            history.replaceState(null, '', location.pathname.slice(0, -10) + location.search + location.hash);
+        }
+    </script>
 
     <!-- Navigation -->
     <nav class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-28 items-center">
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="index.html" class="flex items-center">
+                    <a href="/" class="flex items-center">
                         <img src="assets/logo_it_light.png" alt="Opravím počítač" class="h-20 w-auto">
                     </a>
                 </div>
