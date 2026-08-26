@@ -744,6 +744,55 @@
         document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     </script>
 
+    <!-- --- Popup: naplněná kapacita --- -->
+    <div id="capacity-popup" class="hidden fixed inset-0 z-[60] items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
+            <div class="bg-gradient-to-r from-slate-900 to-slate-800 px-6 py-5">
+                <span class="inline-block bg-secondary/20 text-secondary text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full mb-3">
+                    Kapacita naplněna do 15. 9. 2026
+                </span>
+                <h2 class="text-white text-xl font-bold">Dočasně nepřijímám nové zakázky</h2>
+            </div>
+            <div class="px-6 py-5 text-slate-600 leading-relaxed space-y-3">
+                <p>
+                    Děkuji za váš zájem. Mám momentálně plně obsazený kalendář a do
+                    <strong class="text-primary">15. září 2026</strong> nemohu přijímat další zakázky &mdash;
+                    abych stihl ty rozpracované tak, jak si zaslouží.
+                </p>
+                <p>
+                    Ozvěte se mi prosím <strong class="text-primary">od 16. září 2026</strong>.
+                    Rád se vám pak budu věnovat naplno.
+                </p>
+            </div>
+            <div class="px-6 pb-6">
+                <button id="capacity-popup-close"
+                    class="w-full bg-gradient-to-r from-slate-900 to-slate-800 text-white font-semibold py-3 rounded-xl hover:shadow-lg transition-all focus:outline-none">
+                    Rozumím
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (() => {
+            // Popup zmizí sám po 16. 9. 2026
+            if (new Date() >= new Date(2026, 8, 16)) return;
+            if (sessionStorage.getItem('capacity_popup_closed')) return;
+
+            const popup = document.getElementById('capacity-popup');
+            const show = () => popup.classList.replace('hidden', 'flex');
+            const hide = () => {
+                popup.classList.replace('flex', 'hidden');
+                sessionStorage.setItem('capacity_popup_closed', '1');
+            };
+
+            setTimeout(show, 1200);
+            document.getElementById('capacity-popup-close').addEventListener('click', hide);
+            popup.addEventListener('click', (e) => { if (e.target === popup) hide(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hide(); });
+        })();
+    </script>
+
     <!-- --- Chatbot Widget HTML --- -->
     <div id="chatbot-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
         <!-- Chat Window -->
