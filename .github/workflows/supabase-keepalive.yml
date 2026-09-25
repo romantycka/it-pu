@@ -20,7 +20,7 @@ jobs:
         run: |
           code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 \
             "https://jfbpajgwfdwyyljfcybj.supabase.co/rest/v1/orders?select=id&limit=1" \
-            -H "apikey: $SUPABASE_ANON_KEY")
+            -H "apikey: $SUPABASE_ANON_KEY" || true)
           echo "HTTP $code"
           if [ "$code" != "200" ]; then
             echo "::error::Supabase neodpovídá (HTTP $code) – projekt je nejspíš pozastavený. Obnov ho v dashboardu: https://supabase.com/dashboard/project/jfbpajgwfdwyyljfcybj"
