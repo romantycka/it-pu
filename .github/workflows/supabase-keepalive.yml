@@ -1,0 +1,28 @@
+name: Supabase keepalive
+
+# Supabase Free pauzuje projekt po 7 dnech bez requestu na databázi.
+# Denní dotaz ho drží aktivní; když selže, GitHub pošle e-mail o neúspěšném běhu.
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dotaz na databázi
+        env:
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 \
+            "https://jfbpajgwfdwyyljfcybj.supabase.co/rest/v1/orders?select=id&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY")
+          echo "HTTP $code"
+          if [ "$code" != "200" ]; then
+            echo "::error::Supabase neodpovídá (HTTP $code) – projekt je nejspíš pozastavený. Obnov ho v dashboardu: https://supabase.com/dashboard/project/jfbpajgwfdwyyljfcybj"
+            exit 1
+          fi
