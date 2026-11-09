@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samsung: nechodí oznámení aplikací – návod | Opravím počítač</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description"
+        content="Jednoduchý návod pro telefony Samsung Galaxy: co dělat, když po aktualizaci nechodí oznámení některých aplikací.">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#0f172a', // Slate 900
+                        secondary: '#ea580c', // Orange 600
+                        accent: '#38bdf8', // Sky 400
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Schematický telefon */
+        .phone {
+            width: 260px;
+            max-width: 100%;
+            border: 10px solid #0f172a;
+            border-radius: 32px;
+            background: #f8fafc;
+            padding: 16px 10px 20px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, .2);
+        }
+
+        .phone .title {
+            font-size: 18px;
+            font-weight: 700;
+            padding: 4px 8px 12px;
+            color: #0f172a;
+        }
+
+        .phone .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            font-size: 15px;
+            color: #334155;
+        }
+
+        .phone .row.hl {
+            outline: 4px solid #ea580c;
+            background: #fff7ed;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .phone .sw {
+            flex-shrink: 0;
+            width: 38px;
+            height: 22px;
+            border-radius: 11px;
+            background: #cbd5e1;
+            position: relative;
+        }
+
+        .phone .sw::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        .phone .sw.on {
+            background: #2563eb;
+        }
+
+        .phone .sw.on::after {
+            left: 19px;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased text-xl leading-relaxed">
+
+    <!-- Hlavička (bez navigace) -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 flex flex-wrap justify-between items-center gap-4 py-4">
+            <a href="/" class="flex items-center">
+                <img src="assets/logo_it_light.png" alt="Opravím počítač" class="h-16 w-auto">
+            </a>
+            <a href="tel:+420704176526"
+                class="bg-secondary text-white px-5 py-3 rounded-full font-bold hover:bg-orange-600 transition">
+                +420 704 176 526
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-10">
+
+        <h1 class="text-3xl md:text-5xl font-bold text-primary leading-tight mb-6">
+            Telefon Samsung: nechodí oznámení některých aplikací
+        </h1>
+        <p class="text-2xl mb-6">
+            Po aktualizaci telefonu se někdy přestanou zobrazovat oznámení některých aplikací
+            (například <strong>Počasí</strong>). V nastavení jsou přitom povolená.
+        </p>
+        <div class="bg-white border-l-8 border-secondary rounded-xl p-6 mb-12 shadow-sm">
+            <p class="mb-2"><strong>Jak postupovat:</strong></p>
+            <ul class="list-disc pl-6 space-y-1">
+                <li>Kroky se provádějí postupně, od prvního.</li>
+                <li>Po každém kroku stačí chvíli počkat, zda oznámení začnou chodit.</li>
+                <li>Oranžově je na obrázcích označeno místo, na které se ťuká.</li>
+                <li>Návod je psán pro Samsung Galaxy A56. Na jiných Samsungech je postup téměř stejný,
+                    názvy se mohou mírně lišit.</li>
+            </ul>
+        </div>
+
+        <!-- KROK 1 -->
+        <section class="bg-white rounded-2xl shadow p-6 md:p-10 mb-10">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="flex-shrink-0 w-16 h-16 rounded-full bg-secondary text-white text-4xl font-bold flex items-center justify-center">1</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-primary">Restart telefonu</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <ol class="list-decimal pl-6 space-y-3">
+                    <li>Podržet <strong>boční tlačítko</strong> a tlačítko <strong>ztlumení hlasitosti</strong>
+                        zároveň, asi 2 vteřiny.</li>
+                    <li>Ťuknout na <strong>Restartovat</strong>.</li>
+                    <li>Ještě jednou ťuknout na <strong>Restartovat</strong>.</li>
+                    <li>Počkat, až se telefon znovu zapne.</li>
+                </ol>
+                <div class="flex justify-center">
+                    <div class="phone">
+                        <div class="title">&nbsp;</div>
+                        <div class="row">Vypnout</div>
+                        <div class="row hl">Restartovat</div>
+                        <div class="row">Tísňové volání</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KROK 2 -->
+        <section class="bg-white rounded-2xl shadow p-6 md:p-10 mb-10">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="flex-shrink-0 w-16 h-16 rounded-full bg-secondary text-white text-4xl font-bold flex items-center justify-center">2</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-primary">Vypnout „Nerušit“ a úsporný režim</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <ol class="list-decimal pl-6 space-y-3">
+                    <li>Prstem stáhnout horní okraj obrazovky <strong>dolů</strong>.
+                        Ukáže se panel s rychlými tlačítky.</li>
+                    <li>Pokud svítí tlačítko <strong>Nerušit</strong>, ťuknutím ho vypnout.</li>
+                    <li>Pokud svítí tlačítko <strong>Úspora energie</strong>, ťuknutím ho také vypnout.</li>
+                    <li>Svítící (modré) tlačítko = zapnuto. Šedé tlačítko = vypnuto.</li>
+                </ol>
+                <div class="flex justify-center">
+                    <div class="phone">
+                        <div class="title">Rychlý panel</div>
+                        <div class="row">Wi-Fi <span class="sw on"></span></div>
+                        <div class="row hl">Nerušit <span class="sw"></span></div>
+                        <div class="row hl">Úspora energie <span class="sw"></span></div>
+                        <div class="row">Svítilna <span class="sw"></span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KROK 3 -->
+        <section class="bg-white rounded-2xl shadow p-6 md:p-10 mb-10">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="flex-shrink-0 w-16 h-16 rounded-full bg-secondary text-white text-4xl font-bold flex items-center justify-center">3</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-primary">Zapnout kategorie oznámení</h2>
+            </div>
+            <p class="mb-6">Po aktualizaci bývají některé druhy oznámení schované. Tímto krokem se zase ukážou.</p>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <ol class="list-decimal pl-6 space-y-3">
+                    <li>Otevřít <strong>Nastavení</strong> (ikona ozubeného kolečka).</li>
+                    <li>Ťuknout na <strong>Oznámení</strong>.</li>
+                    <li>Úplně dole ťuknout na <strong>Rozšířená nastavení</strong>.</li>
+                    <li>Zapnout přepínač <strong>Spravovat kategorie oznámení pro jednotlivé aplikace</strong>
+                        (může se jmenovat i podobně, např. „Správa kategorií pro jednotlivé aplikace“).</li>
+                </ol>
+                <div class="flex justify-center">
+                    <div class="phone">
+                        <div class="title">Rozšířená nastavení</div>
+                        <div class="row">Zobrazit ikony oznámení</div>
+                        <div class="row hl">Spravovat kategorie oznámení pro jednotlivé aplikace <span class="sw on"></span></div>
+                        <div class="row">Historie oznámení</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KROK 4 -->
+        <section class="bg-white rounded-2xl shadow p-6 md:p-10 mb-10">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="flex-shrink-0 w-16 h-16 rounded-full bg-secondary text-white text-4xl font-bold flex items-center justify-center">4</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-primary">Povolit všechny druhy oznámení aplikace</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <ol class="list-decimal pl-6 space-y-3">
+                    <li>Vrátit se zpět do <strong>Nastavení → Oznámení</strong>.</li>
+                    <li>Ťuknout na <strong>Oznámení aplikací</strong>.</li>
+                    <li>Vybrat aplikaci, např. <strong>Počasí</strong>.</li>
+                    <li>Ťuknout na <strong>Kategorie oznámení</strong>.</li>
+                    <li>Zapnout <strong>všechny přepínače</strong>, které jsou vypnuté (šedé).</li>
+                    <li>U každé položky je možné ťuknout přímo na její název a zkontrolovat,
+                        že je zapnuté i <strong>vyskakovací oznámení</strong>.</li>
+                </ol>
+                <div class="flex justify-center">
+                    <div class="phone">
+                        <div class="title">Počasí</div>
+                        <div class="row">Povolit oznámení <span class="sw on"></span></div>
+                        <div class="row hl">Kategorie oznámení</div>
+                        <div class="row">Výstrahy počasí <span class="sw on"></span></div>
+                        <div class="row hl">Denní předpověď <span class="sw on"></span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KROK 5 -->
+        <section class="bg-white rounded-2xl shadow p-6 md:p-10 mb-10">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="flex-shrink-0 w-16 h-16 rounded-full bg-secondary text-white text-4xl font-bold flex items-center justify-center">5</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-primary">Nechat aplikaci běžet bez omezení</h2>
+            </div>
+            <p class="mb-6">Telefon šetří baterii a aplikace, které se málo používají, „uspává“.
+                Uspaná aplikace oznámení neposílá.</p>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <ol class="list-decimal pl-6 space-y-3">
+                    <li>Otevřít <strong>Nastavení</strong>.</li>
+                    <li>Ťuknout na <strong>Aplikace</strong>.</li>
+                    <li>Vybrat aplikaci, např. <strong>Počasí</strong>.</li>
+                    <li>Ťuknout na <strong>Baterie</strong>.</li>
+                    <li>Vybrat <strong>Neomezeno</strong>.</li>
+                </ol>
+                <div class="flex justify-center">
+                    <div class="phone">
+                        <div class="title">Baterie</div>
+                        <div class="row hl">Neomezeno <span class="sw on"></span></div>
+                        <div class="row">Optimalizováno</div>
+                        <div class="row">Omezeno</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KROK 6 -->
+        <section class="bg-white rounded-2xl shadow p-6 md:p-10 mb-10">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="flex-shrink-0 w-16 h-16 rounded-full bg-secondary text-white text-4xl font-bold flex items-center justify-center">6</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-primary">Vyndat aplikaci ze „spících aplikací“</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <ol class="list-decimal pl-6 space-y-3">
+                    <li>Otevřít <strong>Nastavení → Baterie</strong>.</li>
+                    <li>Ťuknout na <strong>Limity využití na pozadí</strong>.</li>
+                    <li>Otevřít <strong>Aplikace v režimu spánku</strong>. Pokud je tam aplikace (např. Počasí),
+                        podržet na ní prst a ťuknout na <strong>Odebrat</strong>.</li>
+                    <li>Totéž zkontrolovat v <strong>Aplikace v režimu hlubokého spánku</strong>.</li>
+                    <li>Nakonec otevřít <strong>Aplikace, které nikdy nespí</strong>
+                        (název se může mírně lišit), ťuknout na <strong>+</strong> nahoře,
+                        vybrat aplikaci a ťuknout na <strong>Přidat</strong>.</li>
+                </ol>
+                <div class="flex justify-center">
+                    <div class="phone">
+                        <div class="title">Limity využití na pozadí</div>
+                        <div class="row">Přepnout nepoužívané aplikace do režimu spánku <span class="sw on"></span></div>
+                        <div class="row hl">Aplikace v režimu spánku</div>
+                        <div class="row hl">Aplikace v režimu hlubokého spánku</div>
+                        <div class="row hl">Aplikace, které nikdy nespí</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KROK 7 -->
+        <section class="bg-white rounded-2xl shadow p-6 md:p-10 mb-10">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="flex-shrink-0 w-16 h-16 rounded-full bg-secondary text-white text-4xl font-bold flex items-center justify-center">7</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-primary">Nastavení přímo v aplikaci</h2>
+            </div>
+            <p>Některé aplikace mají vlastní zapínání upozornění. Například v aplikaci <strong>Počasí</strong>:
+                otevřít aplikaci, ťuknout na <strong>tři čárky ☰</strong> (menu), pak na
+                <strong>ozubené kolečko</strong> (nastavení) a zkontrolovat, že jsou upozornění zapnutá.</p>
+        </section>
+
+        <!-- KROK 8 -->
+        <section class="bg-white rounded-2xl shadow p-6 md:p-10 mb-10">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="flex-shrink-0 w-16 h-16 rounded-full bg-secondary text-white text-4xl font-bold flex items-center justify-center">8</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-primary">Vymazat mezipaměť aplikace</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <ol class="list-decimal pl-6 space-y-3">
+                    <li>Otevřít <strong>Nastavení → Aplikace</strong>.</li>
+                    <li>Vybrat aplikaci, např. <strong>Počasí</strong>.</li>
+                    <li>Ťuknout na <strong>Úložiště</strong>.</li>
+                    <li>Dole ťuknout na <strong>Vymazat mezipaměť</strong>.</li>
+                    <li><strong class="text-red-700">Pozor: nemačkat „Vymazat data“!</strong>
+                        Tím by se smazalo nastavení aplikace.</li>
+                    <li>Nakonec telefon ještě jednou <strong>restartovat</strong> (viz krok 1).</li>
+                </ol>
+                <div class="flex justify-center">
+                    <div class="phone">
+                        <div class="title">Úložiště</div>
+                        <div class="row">Data: 12 MB</div>
+                        <div class="row">Mezipaměť: 4 MB</div>
+                        <div class="row" style="text-decoration: line-through; color:#94a3b8">Vymazat data</div>
+                        <div class="row hl">Vymazat mezipaměť</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nepomohlo -->
+        <section class="bg-primary text-white rounded-2xl shadow p-6 md:p-10 mb-10 text-center">
+            <h2 class="text-2xl md:text-4xl font-bold mb-4">Nic z toho nepomohlo?</h2>
+            <p class="text-2xl mb-8 text-slate-200">Stačí zavolat. Rádi poradíme po telefonu nebo přijedeme.</p>
+            <a href="tel:+420704176526"
+                class="inline-block bg-secondary text-white px-8 py-5 rounded-full font-bold text-2xl md:text-3xl hover:bg-orange-600 transition shadow-lg">
+                📞 +420 704 176 526
+            </a>
+            <p class="mt-6 text-slate-300">nebo e-mail
+                <a href="mailto:info@opravimpocitac.cz" class="text-white font-bold underline">info@opravimpocitac.cz</a>
+            </p>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-500 text-sm text-center py-10 px-4">
+        <div class="mb-6 flex justify-center">
+            <a href="/"><img src="assets/logo_it-dark.png" alt="Opravím počítač" class="h-16 w-auto opacity-80"></a>
+        </div>
+        <p>&copy; 2024 Petr Urban - Servis počítačů. Všechna práva vyhrazena.</p>
+    </footer>
+
+</body>
+
+</html>
